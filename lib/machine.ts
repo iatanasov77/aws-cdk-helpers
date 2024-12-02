@@ -6,6 +6,7 @@ import {
     KeyPairFormat,
     KeyPair,
     IKeyPair,
+    IVpc,
     IInstance,
     Instance,
     InstanceClass,
@@ -49,6 +50,13 @@ export interface MachineProps
     uploadBucket?: string; // Bucket Name
 }
 
+export interface VpcProps
+{
+    namePrefix: string;
+    network: string,
+    mask: number
+}
+
 export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): MachineKeyPair
 {
     const cfnKeyPair = new CfnKeyPair( scope, 'MyCfnKeyPair', {
@@ -68,22 +76,11 @@ export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): M
 export function createWebServer( scope: Construct, props: MachineProps ): IInstance
 {
     // Create a VPC
-    const vpc = new Vpc( scope, props.namePrefix + 'Vpc', {
-        vpcName: props.namePrefix + "Vpc",
-        ipAddresses: IpAddresses.cidr( props.cidr ),
-        maxAzs: 1,
-        subnetConfiguration: [
-            {
-                cidrMask: 24,
-                name: 'public-subnet',
-                subnetType: SubnetType.PUBLIC,
-            },
-            {
-                cidrMask: 28,
-                name: 'private-subnet',
-                subnetType: SubnetType.PRIVATE_ISOLATED,
-            },
-        ],
+    let cidrParts = props.cidr.split( "/" );
+    const vpc = createVirtualPrivateCloud( scope, {
+        namePrefix: props.namePrefix,
+        network: cidrParts[0],
+        mask: parseInt( cidrParts[1] )
     });
     
     // Create Security Group
@@ -174,4 +171,26 @@ export function createWebServer( scope: Construct, props: MachineProps ): IInsta
     webServer.connections.allowFromAnyIpv4( Port.tcp( 80 ) );
     
     return webServer;
+}
+
+export function createVirtualPrivateCloud( scope: Construct, props: VpcProps ): IVpc
+{
+    // Create a VPC
+    return new Vpc( scope, props.namePrefix + 'Vpc', {
+        vpcName: props.namePrefix + "Vpc",
+        ipAddresses: IpAddresses.cidr( `${props.network}/${props.mask}` ),
+        maxAzs: 1,
+        subnetConfiguration: [
+            {
+                cidrMask: props.mask + 1,
+                name: 'public-subnet',
+                subnetType: SubnetType.PUBLIC,
+            },
+            {
+                cidrMask: props.mask + 1,
+                name: 'private-subnet',
+                subnetType: SubnetType.PRIVATE_ISOLATED,
+            },
+        ],
+    });
 }
