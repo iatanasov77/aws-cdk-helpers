@@ -1,3 +1,10 @@
+0.1.2	|	Release date: **03.12.2024**
+============================================
+* New Features:
+  - Improve EC2 Machine Helpers.
+  - Update Package Version.
+
+
 0.1.1	|	Release date: **02.12.2024**
 ============================================
 * New Features:
