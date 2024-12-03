@@ -1,6 +1,6 @@
 {
     "name": "aws-cdk-helpers",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Helpers for AWS CDK Application",
     "author": "Ivan I. Atanasov <i.atanasov77@gmail.com>",
     "license": "MIT",
@@ -17,9 +17,9 @@
         "cdk",
         "helper"
     ],
-    "main": "./dist/cjs/index.js",
+    "main": "./dist/esm/index.js",
     "module": "./dist/esm/index.js",
-    "types": "./dist/types/index.d.ts",
+    "types": "./dist/esm/index.d.ts",
     "exports": {
         ".": {
             "require": "./dist/cjs/index.js",
