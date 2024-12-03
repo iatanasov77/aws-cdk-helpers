@@ -1,3 +1,9 @@
+0.2.1	|	Release date: **03.12.2024**
+============================================
+* Bug-Fixes:
+  - Fix Package Json  path to dist files.
+
+
 0.2.0	|	Release date: **03.12.2024**
 ============================================
 * New Features:
