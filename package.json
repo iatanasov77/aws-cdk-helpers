@@ -1,6 +1,7 @@
 {
     "name": "aws-cdk-helpers",
-    "version": "0.2.5",
+    "type": "module",
+    "version": "0.2.6",
     "description": "Helpers for AWS CDK Application",
     "author": "Ivan I. Atanasov <i.atanasov77@gmail.com>",
     "license": "MIT",
