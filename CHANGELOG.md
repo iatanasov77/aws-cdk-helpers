@@ -1,3 +1,10 @@
+0.2.2	|	Release date: **03.12.2024**
+============================================
+* New Features:
+  - Copy Types Definitions into dist folder at Build.
+  - Update README.
+
+
 0.2.1	|	Release date: **03.12.2024**
 ============================================
 * Bug-Fixes:
