@@ -3,12 +3,7 @@ import { Construct } from 'constructs';
 import { Runtime, Architecture } from 'aws-cdk-lib/aws-lambda';
 import { Duration } from 'aws-cdk-lib';
 
-interface BaseFunctionProps
-{
-    tableName: string;
-    handlerLocation: string;
-    handlerFile: string;
-}
+import { BaseFunctionProps } from './types/lambda';
 
 export class BaseFunction extends NodejsFunction
 {
