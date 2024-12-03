@@ -7,11 +7,7 @@ import {
     StreamViewType
 } from 'aws-cdk-lib/aws-dynamodb';
 
-
-export interface TableProps
-{
-    tableName: string;
-}
+import { TableProps } from './types/db';
 
 export function createDynamoDbTable( scope: Construct, props: TableProps ): Table
 {

@@ -7,6 +7,7 @@ interface BaseFunctionProps
 {
     tableName: string;
     handlerLocation: string;
+    handlerFile: string;
 }
 
 export class BaseFunction extends NodejsFunction
@@ -16,8 +17,8 @@ export class BaseFunction extends NodejsFunction
         super( scope, id, {
             ...props,
             runtime: Runtime.NODEJS_20_X,
-            handler: 'handler',
-            entry: `${__dirname}/../../src/lambda/${props.handlerLocation}.ts`,
+            handler: props.handlerLocation,
+            entry: props.handlerFile,
             timeout: Duration.seconds( 10 ),
             architecture: Architecture.ARM_64,
             environment: {

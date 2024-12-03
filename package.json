@@ -1,27 +1,50 @@
 {
-  "name": "aws-cdk-helpers",
-  "type": "module",
-  "version": "0.1.4",
-  "description": "Helpers for AWS CDK Application",
-  "main": "index.js",
-  "files": [
-      "lib"
+    "name": "aws-cdk-helpers",
+    "version": "0.1.4",
+    "description": "Helpers for AWS CDK Application",
+    "author": "Ivan I. Atanasov <i.atanasov77@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/iatanasov77/aws-cdk-helpers/issues"
+    },
+    "homepage": "https://github.com/iatanasov77/aws-cdk-helpers#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/iatanasov77/aws-cdk-helpers.git"
+    },
+    "keywords": [
+        "aws",
+        "cdk",
+        "helper"
     ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iatanasov77/aws-cdk-helpers.git"
-  },
-  "keywords": [
-    "aws",
-    "cdk"
-  ],
-  "author": "Ivan I. Atanasov <i.atanasov77@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/iatanasov77/aws-cdk-helpers/issues"
-  },
-  "homepage": "https://github.com/iatanasov77/aws-cdk-helpers#readme"
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/cjs/index.js",
+            "import": "./dist/esm/index.js"
+        }
+    },
+    "scripts": {
+        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+        "build": "rimraf ./dist && yarn run build:types && rollup -c --bundleConfigAsCjs",
+        "prepublishOnly": "npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "devDependencies": {
+        "@rollup/plugin-typescript": "^12.1.1",
+        "rollup": "^4.28.0",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "tslib": "^2.8.1",
+        "typescript": "^5.7.2"
+    },
+    "dependencies": {
+        "@aws-sdk/client-dynamodb": "3.693.0",
+        "@aws-sdk/client-s3": "3.701.0",
+        "@aws-sdk/client-sns": "3.693.0",
+        "aws-cdk-lib": "2.166.0",
+        "constructs": "^10.0.0"
+    }
 }

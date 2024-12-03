@@ -4,10 +4,7 @@ import { Alarm, Metric, Statistic, Unit, ComparisonOperator } from 'aws-cdk-lib/
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
 import { Topic, Subscription, SubscriptionProtocol } from 'aws-cdk-lib/aws-sns';
 
-export interface AlarmProps
-{
-    tableName: string;
-}
+import { AlarmProps } from './types/message';
 
 export function createDaynamoDbAlarm( scope: Construct, props: AlarmProps ): Topic
 {

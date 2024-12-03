@@ -9,10 +9,7 @@ import {
     BlockPublicAccess,
 } from 'aws-cdk-lib/aws-s3';
 
-export interface BucketProps
-{
-    namePrefix: string;
-}
+import { BucketProps } from './types/storage';
 
 export function createS3BucketForUpload( scope: Construct, props: BucketProps ): Bucket
 {
