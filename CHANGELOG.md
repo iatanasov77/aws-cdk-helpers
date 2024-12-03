@@ -1,3 +1,10 @@
+0.2.0	|	Release date: **03.12.2024**
+============================================
+* New Features:
+  - Build as ESM Package.
+  - Update Package Version.
+
+
 0.1.4	|	Release date: **03.12.2024**
 ============================================
 * Bug-Fixes:

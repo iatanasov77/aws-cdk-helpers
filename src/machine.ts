@@ -26,44 +26,16 @@ import {
     InitCommand,
     InitService,
     InitServiceRestartHandle,
-    InitFile,
-    InitElement
+    InitFile
 } from 'aws-cdk-lib/aws-ec2';
 
-var fs = require( 'fs' );
-
-export interface MachineKeyPair
-{
-    cfnKeyPair: CfnKeyPair;
-    keyPair: IKeyPair;
-}
-
-export interface MachineKeyPairProps
-{
-    namePrefix: string;
-}
-
-export interface MachineProps
-{
-    namePrefix: string;
-    keyPair: IKeyPair;
-    cidr: string; // Classless Inter-Domain Routing
-    elements: InitElement[],
-    uploadBucket?: string; // Bucket Name
-}
-
-export interface VpcProps
-{
-    namePrefix: string;
-    network: string,
-    mask: number
-}
-
-export interface SgProps
-{
-    namePrefix: string;
-    vpc: IVpc;
-}
+import {
+    MachineKeyPair,
+    MachineKeyPairProps,
+    MachineProps,
+    VpcProps,
+    SgProps
+} from './types/machine';
 
 export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): MachineKeyPair
 {
@@ -134,34 +106,6 @@ export function createWebServer( scope: Construct, props: MachineProps ): IInsta
             InitService.enable( "nginx", {
                 serviceRestartHandle: new InitServiceRestartHandle(),
             }),
-            
-            /*
-            InitFile.fromAsset(
-                "/usr/share/nginx/html/info.php", // Destination
-                "./src/web/info.php", // Where the file is located
-            ),
-            */
-            
-            
-            
-//             InitFile.fromAsset(
-//                 "/usr/share/nginx/html/index.php", // Destination
-//                 "./src/web/index.php", // Where the file is located
-//             ),
-
-            InitFile.fromString(
-                "/usr/share/nginx/html/index.php", // Destination
-                fs.readFileSync( './src/web/index.php', 'utf8' ).replace( '__BUCKET_NAME__', props.uploadBucket ),
-            ),
-            
-            InitFile.fromAsset(
-                "/usr/share/nginx/html/composer.json", // Destination
-                "./src/web/composer.json", // Where the file is located
-            ),
-            
-            InitCommand.shellCommand(
-                "cd /usr/share/nginx/html && sudo composer install  --no-interaction",
-            ),
         ),
     });
     
