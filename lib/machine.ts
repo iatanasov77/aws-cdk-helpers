@@ -26,7 +26,8 @@ import {
     InitCommand,
     InitService,
     InitServiceRestartHandle,
-    InitFile
+    InitFile,
+    InitElement
 } from 'aws-cdk-lib/aws-ec2';
 
 var fs = require( 'fs' );
@@ -47,6 +48,7 @@ export interface MachineProps
     namePrefix: string;
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
+    elements: InitElement[],
     uploadBucket?: string; // Bucket Name
 }
 
@@ -55,6 +57,12 @@ export interface VpcProps
     namePrefix: string;
     network: string,
     mask: number
+}
+
+export interface SgProps
+{
+    namePrefix: string;
+    vpc: IVpc;
 }
 
 export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): MachineKeyPair
@@ -84,20 +92,10 @@ export function createWebServer( scope: Construct, props: MachineProps ): IInsta
     });
     
     // Create Security Group
-    const secGroup = new SecurityGroup( scope, props.namePrefix + "SecurityGroup", {
-        vpc: vpc,
-        allowAllOutbound: true
+    const secGroup = createSecurityGroup( scope, {
+        namePrefix: props.namePrefix,
+        vpc: vpc
     });
-    
-    secGroup.addIngressRule(
-        Peer.anyIpv4(),
-        Port.tcp( 22 ), "allow SSH access"
-    );
-    
-    secGroup.addIngressRule(
-        Peer.anyIpv4(),
-        Port.tcp( 80 ), "allow HTTP access"
-    );
     
     // Create an EC2 instance
     const webServer = new Instance( scope, props.namePrefix + 'Instance', {
@@ -193,4 +191,24 @@ export function createVirtualPrivateCloud( scope: Construct, props: VpcProps ): 
             },
         ],
     });
+}
+
+export function createSecurityGroup( scope: Construct, props: SgProps ): SecurityGroup
+{
+    const secGroup = new SecurityGroup( scope, props.namePrefix + "SecurityGroup", {
+        vpc: props.vpc,
+        allowAllOutbound: true
+    });
+    
+    secGroup.addIngressRule(
+        Peer.anyIpv4(),
+        Port.tcp( 22 ), "allow SSH access"
+    );
+    
+    secGroup.addIngressRule(
+        Peer.anyIpv4(),
+        Port.tcp( 80 ), "allow HTTP access"
+    );
+    
+    return secGroup;
 }
