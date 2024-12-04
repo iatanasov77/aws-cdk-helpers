@@ -12,7 +12,7 @@ const copyOptions = {
     ]
 };
 
-const data = [
+export default [
     {
         external: ["typeorm", "sinon"],
         input: "src/index.ts",
@@ -26,5 +26,3 @@ const data = [
 //         plugins: [typescript( typescriptOptions )],
 //     },
 ];
-
-module.exports = data;
