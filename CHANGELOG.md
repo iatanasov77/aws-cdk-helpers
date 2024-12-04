@@ -1,3 +1,9 @@
+0.2.10	|	Release date: **04.12.2024**
+============================================
+* New Features:
+  - Change Module to CommonJs Module.
+
+
 0.2.9	|	Release date: **04.12.2024**
 ============================================
 * Bug-Fixes:
