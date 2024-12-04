@@ -4,6 +4,7 @@ Creating the base of milsymbol
 import * as db from './db';
 import * as storage from './storage';
 import * as machine from './machine';
+import * as application from './application';
 import { BaseFunction } from './lambda';
 
 import {
@@ -18,6 +19,7 @@ import { TableProps } from './types/db';
 import { BaseFunctionProps } from './types/lambda';
 import { AlarmProps } from './types/message';
 import { BucketProps } from './types/storage';
+import { ApplicationProps } from './types/application';
 
 /* ***************************************************************************************
 Export ms to the world
@@ -33,9 +35,12 @@ export {
     TableProps,
     AlarmProps,
     BucketProps,
+    ApplicationProps,
 
     db,
     storage,
     machine,
+    application,
+    
     BaseFunction
 };
