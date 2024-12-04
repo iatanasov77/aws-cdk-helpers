@@ -16,7 +16,7 @@ export default [
     {
         external: ["typeorm", "sinon"],
         input: "src/index.ts",
-        output: { file: "dist/esm/index.js", format: "esm" },
+        output: { file: "dist/esm/index.mjs", format: "esm" },
         plugins: [typescript( typescriptOptions ), copy( copyOptions )],
     },
 //     {
