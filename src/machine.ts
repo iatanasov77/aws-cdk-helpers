@@ -53,7 +53,7 @@ export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): M
     };
 }
 
-export function createWebServer( scope: Construct, props: MachineProps ): IInstance
+export function createWebServerInstance( scope: Construct, props: MachineProps ): IInstance
 {
     // Create a VPC
     let cidrParts = props.cidr.split( "/" );
