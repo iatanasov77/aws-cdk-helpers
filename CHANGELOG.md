@@ -1,3 +1,10 @@
+0.2.7	|	Release date: **04.12.2024**
+============================================
+* Bug-Fixes:
+  - Rollup as ES Module.
+  - Update Package Json Version.
+
+
 0.2.6	|	Release date: **03.12.2024**
 ============================================
 * Bug-Fixes:

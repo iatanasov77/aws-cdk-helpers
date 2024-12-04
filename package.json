@@ -1,7 +1,7 @@
 {
     "name": "aws-cdk-helpers",
     "type": "module",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "description": "Helpers for AWS CDK Application",
     "author": "Ivan I. Atanasov <i.atanasov77@gmail.com>",
     "license": "MIT",
@@ -18,17 +18,14 @@
         "cdk",
         "helper"
     ],
-    "main": "./dist/esm/index.js",
-    "module": "./dist/esm/index.js",
-    "types": "./dist/esm/index.d.ts",
+    "main": "dist/esm/index.js",
+    "types": "dist/esm/index.d.ts",
     "exports": {
-        ".": {
-            "import": "./dist/esm/index.js"
-        }
+        ".": "./dist/esm/index.js"
     },
     "scripts": {
         "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-        "build": "rimraf ./dist && yarn run build:types && rollup -c --bundleConfigAsCjs",
+        "build": "rimraf ./dist && yarn run build:types && rollup -c",
         "prepublishOnly": "yarn run build",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
