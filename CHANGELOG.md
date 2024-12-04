@@ -1,3 +1,9 @@
+0.2.13	|	Release date: **04.12.2024**
+============================================
+* New Features:
+  - Improve WebServer EC2 Instance Initialization.
+
+
 0.2.12	|	Release date: **04.12.2024**
 ============================================
 * New Features:

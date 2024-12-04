@@ -1,10 +1,43 @@
 import {
     InitElement,
     InitFile,
-    InitCommand
+    InitCommand,
+    InitService,
+    InitPackage,
+    InitServiceRestartHandle
 } from 'aws-cdk-lib/aws-ec2';
 
-import { ApplicationProps } from './types/application';
+import {
+    WebServerProps,
+    ApplicationProps
+} from './types/application';
+
+export function initWebServer( props: WebServerProps ): Array<InitElement>
+{
+    let elements = [];
+    
+    elements.push( InitPackage.yum( "nginx" ) );
+    
+    elements.push(
+        InitCommand.shellCommand(
+            "sudo dnf install php php-cli php-json php-common php-mbstring -y",
+        )
+    );
+    
+    elements.push(
+        InitCommand.shellCommand(
+            "sudo dnf install composer -y",
+        )
+    );
+    
+    elements.push(
+        InitService.enable( "nginx", {
+            serviceRestartHandle: new InitServiceRestartHandle(),
+        })
+    );
+    
+    return elements;
+}
 
 export function initSamplePhpApplication( props: ApplicationProps ): Array<InitElement>
 {
