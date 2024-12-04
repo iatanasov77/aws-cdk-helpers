@@ -1,3 +1,9 @@
+0.2.12	|	Release date: **04.12.2024**
+============================================
+* New Features:
+  - Add Helper for EC2 Instance Initiialization of Applications.
+
+
 0.2.11	|	Release date: **04.12.2024**
 ============================================
 * Bug-Fixes:
