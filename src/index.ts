@@ -19,7 +19,7 @@ import { TableProps } from './types/db';
 import { BaseFunctionProps } from './types/lambda';
 import { AlarmProps } from './types/message';
 import { BucketProps } from './types/storage';
-import { ApplicationProps } from './types/application';
+import { WebServerProps, ApplicationProps } from './types/application';
 
 /* ***************************************************************************************
 Export ms to the world

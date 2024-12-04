@@ -20,13 +20,7 @@ import {
     Peer,
     Port,
     SecurityGroup,
-    
-    CloudFormationInit,
-    InitPackage,
-    InitCommand,
-    InitService,
-    InitServiceRestartHandle,
-    InitFile
+    CloudFormationInit
 } from 'aws-cdk-lib/aws-ec2';
 
 import {
@@ -36,6 +30,8 @@ import {
     VpcProps,
     SgProps
 } from './types/machine';
+
+import { initWebServer } from './application';
 
 export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): MachineKeyPair
 {
@@ -92,21 +88,7 @@ export function createWebServerInstance( scope: Construct, props: MachineProps )
         // Debug Initialization:
         // aws ec2 get-console-output --instance-id i-09edc092e25b1500b --profile default
         //////////////////////////////////////////////////////////////////////////////////
-        init: CloudFormationInit.fromElements(
-            InitPackage.yum( "nginx" ),
-            
-            InitCommand.shellCommand(
-                "sudo dnf install php php-cli php-json php-common php-mbstring -y",
-            ),
-            
-            InitCommand.shellCommand(
-                "sudo dnf install composer -y",
-            ),
-            
-            InitService.enable( "nginx", {
-                serviceRestartHandle: new InitServiceRestartHandle(),
-            }),
-        ),
+        init: CloudFormationInit.fromElements( ...initWebServer( {} ).concat( props.elements ) ),
     });
     
     // Allow inbound HTTP traffic

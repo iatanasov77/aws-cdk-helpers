@@ -1,3 +1,8 @@
+export interface WebServerProps
+{
+    
+}
+
 export interface ApplicationProps
 {
     sourcePath: string;
