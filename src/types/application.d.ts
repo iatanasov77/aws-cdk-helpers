@@ -9,4 +9,6 @@ export interface ApplicationProps
     applicationRoot: string;
     files: Array<string>;
     useComposer: boolean;
+    withEnv: boolean;
+    userName: string;
 }
