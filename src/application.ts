@@ -11,7 +11,8 @@ import {
 
 import {
     WebServerProps,
-    ApplicationProps
+    ApplicationProps,
+    ApplicationEnvProps
 } from './types/application';
 
 import * as iam from './iam';
@@ -76,7 +77,10 @@ export function initSamplePhpApplication( scope: Construct, props: ApplicationPr
         elements.push(
             InitFile.fromString(
                 `${props.applicationRoot}/.env`,
-                this.createApplicationEnv( scope, props.userName ),
+                this.createApplicationEnv( scope, {
+                    userName: props.userName,
+                    envVars: props.envVars,
+                }),
             )
         );
         
@@ -85,15 +89,25 @@ export function initSamplePhpApplication( scope: Construct, props: ApplicationPr
     return elements;
 }
 
-export function createApplicationEnv( scope: Construct, userName: string ): string
+export function createApplicationEnv( scope: Construct, props: ApplicationEnvProps ): string
 {
-    const profile: UserProfile = iam.getUserProfile( scope, userName )
+    let env: string = '';
     
-    let env: string = `
-AWS_REGION=${profile.region}\n
-AWS_ACCESS_KEY_ID=${profile.keyId}\n
+    if ( props.userName ) {
+        const profile: UserProfile = iam.getUserProfile( scope, props.userName )
+        
+        env += `
+AWS_REGION=${profile.region}
+AWS_ACCESS_KEY_ID=${profile.keyId}
 AWS_ACCESS_KEY_SECRET=${profile.keySecret}\n
 `;
+    }
+
+    if ( props.envVars ) {
+        for ( const [key, value] of props.envVars ) {
+            env += `${key}=${value}\n`;
+        }
+    }
     
     return env;
 }
