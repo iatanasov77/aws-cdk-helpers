@@ -22,7 +22,7 @@ import { TableProps } from './types/db';
 import { BaseFunctionProps } from './types/lambda';
 import { AlarmProps } from './types/message';
 import { BucketProps } from './types/storage';
-import { WebServerProps, ApplicationProps } from './types/application';
+import { WebServerProps, ApplicationProps, ApplicationEnvProps } from './types/application';
 
 /* ***************************************************************************************
 Export ms to the world
@@ -41,6 +41,7 @@ export {
     AlarmProps,
     BucketProps,
     ApplicationProps,
+    ApplicationEnvProps,
 
     iam,
     db,

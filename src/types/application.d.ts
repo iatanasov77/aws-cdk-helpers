@@ -10,5 +10,12 @@ export interface ApplicationProps
     files: Array<string>;
     useComposer: boolean;
     withEnv: boolean;
-    userName: string;
+    userName?: string;
+    envVars?: Map<string, string>;
+}
+
+export interface ApplicationEnvProps
+{
+    userName?: string;
+    envVars?: Map<string, string>;
 }
