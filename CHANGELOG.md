@@ -1,3 +1,10 @@
+0.3.0	|	Release date: **05.12.2024**
+============================================
+* New Features:
+  - Create an IAM Module to Get User Profile Attributes when needed.
+  - Update Package Json Version.
+
+
 0.2.13	|	Release date: **04.12.2024**
 ============================================
 * New Features:
