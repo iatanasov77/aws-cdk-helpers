@@ -1,3 +1,9 @@
+0.3.1	|	Release date: **05.12.2024**
+============================================
+* New Features:
+  - Improve Generating Application Env File.
+
+
 0.3.0	|	Release date: **05.12.2024**
 ============================================
 * New Features:
