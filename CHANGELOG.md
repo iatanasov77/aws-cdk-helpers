@@ -1,3 +1,9 @@
+0.3.2	|	Release date: **06.12.2024**
+============================================
+* New Features:
+  - Create Helpers for Creating AutoScalingGroups and LoadBalancers.
+
+
 0.3.1	|	Release date: **05.12.2024**
 ============================================
 * New Features:
