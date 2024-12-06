@@ -9,9 +9,6 @@ import {
     IVpc,
     IInstance,
     Instance,
-    InstanceClass,
-    InstanceSize,
-    InstanceType,
     AmazonLinuxImage,
     AmazonLinuxGeneration,
     Vpc,
@@ -20,7 +17,9 @@ import {
     Peer,
     Port,
     SecurityGroup,
-    CloudFormationInit
+    CloudFormationInit,
+    LaunchTemplate,
+    ILaunchTemplate
 } from 'aws-cdk-lib/aws-ec2';
 
 import {
@@ -28,20 +27,24 @@ import {
     MachineKeyPairProps,
     MachineProps,
     VpcProps,
-    SgProps
+    SgProps,
+    LaunchTemplateProps,
+    LoadbalancedMachineProps,
+    ILoadbalancedWebServer
 } from './types/machine';
 
 import { initWebServer } from './application';
+import { createEc2ManagedInstanceCoreRole } from './iam';
 
 export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): MachineKeyPair
 {
-    const cfnKeyPair = new CfnKeyPair( scope, 'MyCfnKeyPair', {
+    const cfnKeyPair = new CfnKeyPair( scope, `${props.namePrefix}CfnKeyPair`, {
         keyName: 'my-key-pair',
         //keyType: KeyPairType.ED25519,
         keyType: KeyPairType.RSA,
         keyFormat: KeyPairFormat.PEM,
     });
-    const keyPair = KeyPair.fromKeyPairName( scope, 'MyKeyPair', 'my-key-pair' );
+    const keyPair = KeyPair.fromKeyPairName( scope, `${props.namePrefix}KeyPair`, 'my-key-pair' );
     
     return {
         cfnKeyPair: cfnKeyPair,
@@ -49,7 +52,7 @@ export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): M
     };
 }
 
-export function createWebServerInstance( scope: Construct, props: MachineProps ): IInstance
+export function createStandaloneWebServerInstance( scope: Construct, props: MachineProps ): IInstance
 {
     // Create a VPC
     let cidrParts = props.cidr.split( "/" );
@@ -66,29 +69,20 @@ export function createWebServerInstance( scope: Construct, props: MachineProps )
     });
     
     // Create an EC2 instance
-    const webServer = new Instance( scope, props.namePrefix + 'Instance', {
+    const webServer = new Instance( scope, `${props.namePrefix}Instance`, {
+        instanceName: `${props.namePrefix}Instance`,
+        
         vpc,
+        associatePublicIpAddress: true,
+        vpcSubnets: { subnetType: SubnetType.PUBLIC },
         
-        instanceType: InstanceType.of(
-            InstanceClass.T2,
-            InstanceSize.MICRO
-        ),
-        
-        machineImage: new AmazonLinuxImage({
-            generation: AmazonLinuxGeneration.AMAZON_LINUX_2023,
-        }),
+        instanceType: props.instanceType,
+        machineImage: props.machineImage,
         
         keyPair: props.keyPair,
-        associatePublicIpAddress: true,
-        instanceName: props.namePrefix + "Instance",
-        vpcSubnets: { subnetType: SubnetType.PUBLIC },
         securityGroup: secGroup,
         
-        //////////////////////////////////////////////////////////////////////////////////
-        // Debug Initialization:
-        // aws ec2 get-console-output --instance-id i-09edc092e25b1500b --profile default
-        //////////////////////////////////////////////////////////////////////////////////
-        init: CloudFormationInit.fromElements( ...initWebServer( {} ).concat( props.elements ) ),
+        init: CloudFormationInit.fromElements( ...initWebServer( {} ).concat( props.initElements ) ),
     });
     
     // Allow inbound HTTP traffic
@@ -100,7 +94,7 @@ export function createWebServerInstance( scope: Construct, props: MachineProps )
 export function createVirtualPrivateCloud( scope: Construct, props: VpcProps ): IVpc
 {
     // Create a VPC
-    return new Vpc( scope, props.namePrefix + 'Vpc', {
+    return new Vpc( scope, `${props.namePrefix}Vpc`, {
         vpcName: props.namePrefix + "Vpc",
         ipAddresses: IpAddresses.cidr( `${props.network}/${props.mask}` ),
         maxAzs: 1,
@@ -137,4 +131,38 @@ export function createSecurityGroup( scope: Construct, props: SgProps ): Securit
     );
     
     return secGroup;
+}
+
+export function createLaunchTemplate( scope: Construct, props: LaunchTemplateProps ): ILaunchTemplate
+{
+    return new LaunchTemplate( scope, `${props.namePrefix}LaunchTemplate`, {
+        instanceType: props.instanceType,
+        machineImage: props.machineImage,
+        
+        keyPair: props.keyPair,
+        securityGroup: props.securityGroup,
+        
+        role: createEc2ManagedInstanceCoreRole( scope, { namePrefix: props.namePrefix } ),
+    });
+}
+
+export function createLoadbalancedWebServerInstance( scope: Construct, props: LoadbalancedMachineProps ): ILoadbalancedWebServer
+{
+    // Create a VPC
+    let cidrParts = props.cidr.split( "/" );
+    const vpc = createVirtualPrivateCloud( scope, {
+        namePrefix: props.namePrefix,
+        network: cidrParts[0],
+        mask: parseInt( cidrParts[1] )
+    });
+    
+    // Create Security Group
+    const secGroup = createSecurityGroup( scope, {
+        namePrefix: props.namePrefix,
+        vpc: vpc
+    });
+    
+    return {
+    
+    };
 }
