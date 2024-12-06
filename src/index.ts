@@ -1,5 +1,5 @@
 /* ***************************************************************************************
-Creating the base of milsymbol
+Creating the base of aws-cdk-helpers
 *************************************************************************************** */
 import * as iam from './iam';
 import * as db from './db';
@@ -8,14 +8,17 @@ import * as machine from './machine';
 import * as application from './application';
 import { BaseFunction } from './lambda';
 
-import { UserProfile } from './types/iam';
+import { UserProfile, RoleProps } from './types/iam';
 
 import {
     MachineKeyPair,
     MachineKeyPairProps,
     MachineProps,
     VpcProps,
-    SgProps
+    SgProps,
+    LaunchTemplateProps,
+    LoadbalancedMachineProps,
+    ILoadbalancedWebServer
 } from './types/machine';
 
 import { TableProps } from './types/db';
@@ -23,12 +26,14 @@ import { BaseFunctionProps } from './types/lambda';
 import { AlarmProps } from './types/message';
 import { BucketProps } from './types/storage';
 import { WebServerProps, ApplicationProps, ApplicationEnvProps } from './types/application';
+import { AutoScalingGroupProps, ApplicationLoadBalancerProps } from './types/scaling-group';
 
 /* ***************************************************************************************
-Export ms to the world
+Export aws-cdk-helpers to the world
 *************************************************************************************** */
 export {
     UserProfile,
+    RoleProps,
     
     MachineKeyPair,
     MachineKeyPairProps,
@@ -40,6 +45,7 @@ export {
     TableProps,
     AlarmProps,
     BucketProps,
+    WebServerProps,
     ApplicationProps,
     ApplicationEnvProps,
 

@@ -4,3 +4,8 @@ export interface UserProfile
     keyId: string;
     keySecret: string;
 }
+
+export interface RoleProps
+{
+    namePrefix: string;
+}
