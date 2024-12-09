@@ -1,3 +1,9 @@
+0.3.9	|	Release date: **09.12.2024**
+============================================
+* New Features:
+  - Pass Maximum number of Availability Zones when Create a VPC.
+
+
 0.3.8	|	Release date: **09.12.2024**
 ============================================
 * Bug-Fixes:
