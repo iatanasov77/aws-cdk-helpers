@@ -1,6 +1,6 @@
 {
     "name": "aws-cdk-helpers",
-    "version": "0.3.7",
+    "version": "0.3.8",
     "description": "Helpers for AWS CDK Application",
     "author": "Ivan I. Atanasov <i.atanasov77@gmail.com>",
     "license": "MIT",
@@ -36,10 +36,10 @@
         "typescript": "^5.7.2"
     },
     "dependencies": {
-        "@aws-sdk/client-dynamodb": "3.693.0",
-        "@aws-sdk/client-s3": "3.701.0",
-        "@aws-sdk/client-sns": "3.693.0",
-        "aws-cdk-lib": "2.166.0",
+        "@aws-sdk/client-dynamodb": "^3.693",
+        "@aws-sdk/client-s3": "^3.701",
+        "@aws-sdk/client-sns": "^3.693",
+        "aws-cdk-lib": "^2.166",
         "constructs": "^10.0.0"
     }
 }
