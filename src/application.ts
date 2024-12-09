@@ -77,7 +77,7 @@ export function initSamplePhpApplication( scope: Construct, props: ApplicationPr
         elements.push(
             InitFile.fromString(
                 `${props.applicationRoot}/.env`,
-                this.createApplicationEnv( scope, {
+                createApplicationEnv( scope, {
                     userName: props.userName,
                     envVars: props.envVars,
                 }),
