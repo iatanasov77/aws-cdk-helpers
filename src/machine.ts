@@ -25,7 +25,7 @@ import {
 import {
     MachineKeyPair,
     MachineKeyPairProps,
-    MachineProps,
+    StandaloneMachineProps,
     VpcProps,
     SgProps,
     LaunchTemplateProps,
@@ -54,7 +54,7 @@ export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): M
     };
 }
 
-export function createStandaloneWebServerInstance( scope: Construct, props: MachineProps ): IInstance
+export function createStandaloneWebServerInstance( scope: Construct, props: StandaloneMachineProps ): IInstance
 {
     // Create a VPC
     let cidrParts = props.cidr.split( "/" );

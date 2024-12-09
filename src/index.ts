@@ -14,7 +14,7 @@ import { UserProfile, RoleProps } from './types/iam';
 import {
     MachineKeyPair,
     MachineKeyPairProps,
-    MachineProps,
+    StandaloneMachineProps,
     VpcProps,
     SgProps,
     LaunchTemplateProps,
@@ -38,7 +38,7 @@ export {
     
     MachineKeyPair,
     MachineKeyPairProps,
-    MachineProps,
+    StandaloneMachineProps,
     VpcProps,
     SgProps,
     
