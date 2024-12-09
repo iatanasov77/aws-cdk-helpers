@@ -11,6 +11,7 @@ import {
 import { AutoScalingGroup } from 'aws-cdk-lib/aws-autoscaling';
 import { IApplicationLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 
+import { WebServerProps } from './application';
 import { AutoScalingParams } from './scaling-group';
 
 export interface MachineKeyPair
@@ -34,7 +35,9 @@ export interface StandaloneMachineProps
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
     
-    initElements: InitElement[];
+    lamp?: WebServerProps;
+    initElements?: InitElement[];
+    
     uploadBucket?: string; // Bucket Name
 }
 

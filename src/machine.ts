@@ -84,7 +84,9 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
         keyPair: props.keyPair,
         securityGroup: secGroup,
         
-        init: CloudFormationInit.fromElements( ...initWebServer( {} ).concat( props.initElements ) ),
+        init: CloudFormationInit.fromElements( ...initWebServer({
+            
+        }).concat( props.initElements ) ),
     });
     
     // Allow inbound HTTP traffic

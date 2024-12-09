@@ -1,6 +1,8 @@
 export interface WebServerProps
 {
-    
+    webServerPackage?: string;
+    phpVersion?: string;
+    databasePackage?: string; // mariadb105-server
 }
 
 export interface ApplicationProps
