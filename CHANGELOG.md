@@ -1,3 +1,9 @@
+0.3.10	|	Release date: **09.12.2024**
+============================================
+* Bug-Fixes:
+  - Fix Creating a VPC with Maximum number of Availability Zones > 1
+
+
 0.3.9	|	Release date: **09.12.2024**
 ============================================
 * New Features:
