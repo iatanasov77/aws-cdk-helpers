@@ -36,6 +36,8 @@ import {
 import { initWebServer } from './application';
 import { createEc2ManagedInstanceCoreRole } from './iam';
 
+import { createAutoScalingGroup, createApplicationLoadBalancer } from './scaling-group';
+
 export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): MachineKeyPair
 {
     const cfnKeyPair = new CfnKeyPair( scope, `${props.namePrefix}CfnKeyPair`, {
@@ -162,7 +164,42 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         vpc: vpc
     });
     
-    return {
+     const launchTemplate = createLaunchTemplate( scope, {
+            namePrefix: props.namePrefix,
+            keyPair: props.keyPair,
+            instanceType: props.instanceType,
+            machineImage: props.machineImage,
+            securityGroup: secGroup,
+        })
     
+    // Create Auto-Scaling Group
+    const autoScalingGroup = createAutoScalingGroup( scope, {
+        namePrefix: props.namePrefix,
+        
+        vpc: vpc,
+        launchTemplate: launchTemplate,
+        desiredCapacity: props.desiredCapacity,
+        initElements: props.initElements,
+    });
+    
+    // Create a LoadBalancer
+    const lb = createApplicationLoadBalancer( scope, {
+        namePrefix: props.namePrefix,
+        vpc: vpc,
+        autoScalingGroup: autoScalingGroup,
+    });
+    
+    // Auto Scalling Rules
+    autoScalingGroup.scaleOnCpuUtilization( "OnCpuUtilizationScaling", {
+        targetUtilizationPercent: 60,
+    });
+    
+    autoScalingGroup.scaleOnRequestCount( 'OnRequestCountScaling', {
+        targetRequestsPerMinute: 60,
+    });
+    
+    return {
+        autoScalingGroup: autoScalingGroup,
+        loadBalancer: lb,
     };
 }

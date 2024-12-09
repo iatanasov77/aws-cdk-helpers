@@ -4,28 +4,20 @@ import {
     InstanceType,
     IMachineImage,
     IKeyPair,
-    SecurityGroup
+    SecurityGroup,
+    ILaunchTemplate
 } from 'aws-cdk-lib/aws-ec2';
-import { IAutoScalingGroup } from 'aws-cdk-lib/aws-autoscaling';
-import { IApplicationLoadBalancerTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
-
-interface LoadBalancerTargetInterface extends IAutoScalingGroup, IApplicationLoadBalancerTarget
-{
-
-}
+import { AutoScalingGroup } from 'aws-cdk-lib/aws-autoscaling';
 
 export interface AutoScalingGroupProps
 {
     namePrefix: string;
     
     vpc: IVpc;
-    initElements: InitElement[],
+    initElements: InitElement[];
+    launchTemplate: ILaunchTemplate;
     
-    // Launch Template Props
-    instanceType: InstanceType,
-    machineImage: IMachineImage;
-    keyPair: IKeyPair,
-    securityGroup: SecurityGroup
+    desiredCapacity: number;
 }
 
 export interface ApplicationLoadBalancerProps
@@ -33,5 +25,11 @@ export interface ApplicationLoadBalancerProps
     namePrefix: string;
     
     vpc: IVpc;
-    autoScalingGroup: LoadBalancerTargetInterface;
+    autoScalingGroup: AutoScalingGroup;
+}
+
+export interface AutoScalingParams
+{
+    cpuUtilizationPercent?: number;
+    рequestsCountPerMinute?: number;
 }

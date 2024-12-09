@@ -1,3 +1,10 @@
+0.3.3	|	Release date: **09.12.2024**
+============================================
+* New Features:
+  - Add a Feature to Create a LoadBalanced WebServer Instance with Auto Scaling.
+  - Update Package Version.
+
+
 0.3.2	|	Release date: **06.12.2024**
 ============================================
 * New Features:
