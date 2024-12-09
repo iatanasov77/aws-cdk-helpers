@@ -9,7 +9,9 @@ const typescriptOptions = {
 const copyOptions = {
     targets: [
         //{ src: 'src/types/*', dest: 'dist/esm/types' },
-        { src: 'src/types/*', dest: 'dist/cjs/types' }
+        { src: 'src/types/*', dest: 'dist/cjs/types' },
+        
+        //{ src: 'README.md', dest: 'dist/cjs' },
     ]
 };
 
