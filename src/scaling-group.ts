@@ -22,7 +22,9 @@ export function createAutoScalingGroup( scope: Construct, props: AutoScalingGrou
         
         launchTemplate: props.launchTemplate,
         
-        init: CloudFormationInit.fromElements( ...initWebServer( {} ).concat( props.initElements ) ),
+        init: CloudFormationInit.fromElements( ...initWebServer({
+            
+        }).concat( props.initElements ) ),
         
         signals: Signals.waitForCount(1, {
             minSuccessPercentage: 80,

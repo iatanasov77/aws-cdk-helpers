@@ -1,3 +1,9 @@
+0.4.0	|	Release date: **09.12.2024**
+============================================
+* New Features:
+  - Improve Provisioning of WebServer Instance.
+
+
 0.3.10	|	Release date: **09.12.2024**
 ============================================
 * Bug-Fixes:
