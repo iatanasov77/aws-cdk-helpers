@@ -9,7 +9,7 @@ import {
     ApplicationLoadBalancerProps
 } from './types/scaling-group';
 
-import { initWebServer } from './application';
+import { initWebServer } from './lamp';
 
 export function createAutoScalingGroup( scope: Construct, props: AutoScalingGroupProps ): AutoScalingGroup
 {

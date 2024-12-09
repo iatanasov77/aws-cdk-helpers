@@ -10,69 +10,12 @@ import {
 } from 'aws-cdk-lib/aws-ec2';
 
 import {
-    WebServerProps,
     ApplicationProps,
     ApplicationEnvProps
 } from './types/application';
 
 import * as iam from './iam';
 import { UserProfile } from './types/iam';
-
-/*
- * https://docs.aws.amazon.com/linux/al2023/ug/ec2-lamp-amazon-linux-2023.html
- */
-export function initWebServer( props: WebServerProps ): Array<InitElement>
-{
-    let command;
-    let elements = [];
-    
-    // Install Web Server
-    if ( props.webServerPackage ) {
-        elements.push( InitPackage.yum( props.webServerPackage ) );
-    } else {
-        elements.push( InitPackage.yum( "nginx" ) );
-    }
-    
-    // Install Database Server
-    if ( props.databasePackage ) {
-        elements.push(
-            InitCommand.shellCommand(
-                `sudo dnf install ${props.databasePackage} -y`,
-            )
-        );
-        
-        elements.push(
-            InitService.enable( "mariadb", {
-                serviceRestartHandle: new InitServiceRestartHandle(),
-            })
-        );
-    }
-    
-    // Install PHP
-    
-    if ( props.phpVersion ) {
-        command = `sudo dnf install php${props.phpVersion} php${props.phpVersion}-cli php${props.phpVersion}-common php${props.phpVersion}-mbstring php${props.phpVersion}-xml -y`;
-    } else {
-        command = "sudo dnf install php php-cli php-common php-mbstring php-xml -y";
-    }
-    elements.push( InitCommand.shellCommand( command ) );
-    
-    // Install Composer
-    elements.push(
-        InitCommand.shellCommand(
-            "sudo dnf install composer -y",
-        )
-    );
-    
-    // Restart Web Server
-    elements.push(
-        InitService.enable( props.webServerPackage ? props.webServerPackage : "nginx", {
-            serviceRestartHandle: new InitServiceRestartHandle(),
-        })
-    );
-    
-    return elements;
-}
 
 export function initSamplePhpApplication( scope: Construct, props: ApplicationProps ): Array<InitElement>
 {
