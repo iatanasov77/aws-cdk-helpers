@@ -44,6 +44,8 @@ export interface VpcProps
     
     network: string;
     mask: number;
+    
+    maxAzs?: number;
 }
 
 export interface SgProps
@@ -74,6 +76,7 @@ export interface LoadbalancedMachineProps
     
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
+    maxAzs?: number; // Maximum number of Availability Zones to use in this region
     
     initElements: InitElement[];
     uploadBucket?: string; // Bucket Name

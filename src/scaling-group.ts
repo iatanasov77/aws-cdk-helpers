@@ -18,7 +18,7 @@ export function createAutoScalingGroup( scope: Construct, props: AutoScalingGrou
         
         vpc: props.vpc,
         vpcSubnets: { subnetType: SubnetType.PUBLIC },
-        desiredCapacity: 3,
+        desiredCapacity: props.desiredCapacity,
         
         launchTemplate: props.launchTemplate,
         
