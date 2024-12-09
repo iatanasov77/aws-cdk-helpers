@@ -33,7 +33,7 @@ import {
     ILoadbalancedWebServer
 } from './types/machine';
 
-import { initWebServer } from './application';
+import { initWebServer } from './lamp';
 import { createEc2ManagedInstanceCoreRole } from './iam';
 
 import { createAutoScalingGroup, createApplicationLoadBalancer } from './scaling-group';
@@ -84,9 +84,9 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
         keyPair: props.keyPair,
         securityGroup: secGroup,
         
-        init: CloudFormationInit.fromElements( ...initWebServer({
-            
-        }).concat( props.initElements ) ),
+        init: CloudFormationInit.fromElements( ...initWebServer(
+            props.lamp ? props.lamp : {}
+        ).concat( props.initElements ) ),
     });
     
     // Allow inbound HTTP traffic
