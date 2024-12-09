@@ -95,6 +95,9 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
 
 export function createVirtualPrivateCloud( scope: Construct, props: VpcProps ): IVpc
 {
+    const maxAzs: number = props.maxAzs ? props.maxAzs : 1;
+    const subnetCidrMask: number = props.mask + maxAzs;
+    
     // Create a VPC
     return new Vpc( scope, `${props.namePrefix}Vpc`, {
         vpcName: props.namePrefix + "Vpc",
@@ -102,12 +105,12 @@ export function createVirtualPrivateCloud( scope: Construct, props: VpcProps ): 
         maxAzs: props.maxAzs ? props.maxAzs : 1,
         subnetConfiguration: [
             {
-                cidrMask: props.mask + 1,
+                cidrMask: subnetCidrMask,
                 name: 'public-subnet',
                 subnetType: SubnetType.PUBLIC,
             },
             {
-                cidrMask: props.mask + 1,
+                cidrMask: subnetCidrMask,
                 name: 'private-subnet',
                 subnetType: SubnetType.PRIVATE_ISOLATED,
             },
