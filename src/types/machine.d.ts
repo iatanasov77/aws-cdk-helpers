@@ -24,7 +24,7 @@ export interface MachineKeyPairProps
     namePrefix: string;
 }
 
-export interface MachineProps
+export interface StandaloneMachineProps
 {
     namePrefix: string;
     
@@ -62,8 +62,25 @@ export interface LaunchTemplateProps
     securityGroup: SecurityGroup
 }
 
-export interface LoadbalancedMachineProps extends MachineProps
+export interface LoadbalancedMachineProps
 {
+    /**
+     * Standalone Machine Props
+     */ 
+    namePrefix: string;
+    
+    instanceType: InstanceType,
+    machineImage: IMachineImage;
+    
+    keyPair: IKeyPair;
+    cidr: string; // Classless Inter-Domain Routing
+    
+    initElements: InitElement[],
+    uploadBucket?: string; // Bucket Name
+    
+    /**
+     * Loadbalance dMachine Props
+     */
     desiredCapacity: number;
     autoScalingParams: AutoScalingParams;
 }
