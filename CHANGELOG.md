@@ -1,3 +1,10 @@
+0.3.8	|	Release date: **09.12.2024**
+============================================
+* Bug-Fixes:
+  - Fix package dependencies constraints.
+  - Update Package Version.
+
+
 0.3.7	|	Release date: **09.12.2024**
 ============================================
 * Bug-Fixes:
