@@ -99,7 +99,7 @@ export function createVirtualPrivateCloud( scope: Construct, props: VpcProps ): 
     return new Vpc( scope, `${props.namePrefix}Vpc`, {
         vpcName: props.namePrefix + "Vpc",
         ipAddresses: IpAddresses.cidr( `${props.network}/${props.mask}` ),
-        maxAzs: 1,
+        maxAzs: props.maxAzs ? props.maxAzs : 1,
         subnetConfiguration: [
             {
                 cidrMask: props.mask + 1,
@@ -155,7 +155,8 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
     const vpc = createVirtualPrivateCloud( scope, {
         namePrefix: props.namePrefix,
         network: cidrParts[0],
-        mask: parseInt( cidrParts[1] )
+        mask: parseInt( cidrParts[1] ),
+        maxAzs: props.maxAzs ? props.maxAzs : 2
     });
     
     // Create Security Group
