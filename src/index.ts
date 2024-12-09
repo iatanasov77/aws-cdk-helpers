@@ -6,6 +6,7 @@ import * as db from './db';
 import * as storage from './storage';
 import * as machine from './machine';
 import * as application from './application';
+import * as scaling from './scaling-group';
 import { BaseFunction } from './lambda';
 
 import { UserProfile, RoleProps } from './types/iam';
@@ -48,12 +49,20 @@ export {
     WebServerProps,
     ApplicationProps,
     ApplicationEnvProps,
+    
+    LaunchTemplateProps,
+    LoadbalancedMachineProps,
+    ILoadbalancedWebServer,
+    
+    AutoScalingGroupProps,
+    ApplicationLoadBalancerProps,
 
     iam,
     db,
     storage,
     machine,
     application,
+    scaling,
     
     BaseFunction
 };

@@ -8,6 +8,11 @@ import {
     SecurityGroup
 } from 'aws-cdk-lib/aws-ec2';
 
+import { AutoScalingGroup } from 'aws-cdk-lib/aws-autoscaling';
+import { IApplicationLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+
+import { AutoScalingParams } from './scaling-group';
+
 export interface MachineKeyPair
 {
     cfnKeyPair: CfnKeyPair;
@@ -60,9 +65,11 @@ export interface LaunchTemplateProps
 export interface LoadbalancedMachineProps extends MachineProps
 {
     desiredCapacity: number;
+    autoScalingParams: AutoScalingParams;
 }
 
 export interface ILoadbalancedWebServer
 {
-
+    autoScalingGroup: AutoScalingGroup;
+    loadBalancer: IApplicationLoadBalancer;
 }

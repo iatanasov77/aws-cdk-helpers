@@ -1,14 +1,17 @@
 import { Construct } from 'constructs';
 import { Duration } from 'aws-cdk-lib/core';
-import { AutoScalingGroup, IAutoScalingGroup, Signals } from 'aws-cdk-lib/aws-autoscaling';
+import { AutoScalingGroup, Signals } from 'aws-cdk-lib/aws-autoscaling';
 import { IApplicationLoadBalancer, ApplicationLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { CloudFormationInit, SubnetType } from 'aws-cdk-lib/aws-ec2';
 
-import { AutoScalingGroupProps, ApplicationLoadBalancerProps } from './types/scaling-group';
-import { initWebServer } from './application';
-import { createLaunchTemplate } from './machine';
+import {
+    AutoScalingGroupProps,
+    ApplicationLoadBalancerProps
+} from './types/scaling-group';
 
-export function createAutoScalingGroup( scope: Construct, props: AutoScalingGroupProps ): IAutoScalingGroup
+import { initWebServer } from './application';
+
+export function createAutoScalingGroup( scope: Construct, props: AutoScalingGroupProps ): AutoScalingGroup
 {
     const autoScalingGroup = new AutoScalingGroup( scope, `${props.namePrefix}AutoScalingGroup`, {
         autoScalingGroupName: `${props.namePrefix}AutoScalingGroup`,
@@ -17,13 +20,7 @@ export function createAutoScalingGroup( scope: Construct, props: AutoScalingGrou
         vpcSubnets: { subnetType: SubnetType.PUBLIC },
         desiredCapacity: 3,
         
-        launchTemplate: createLaunchTemplate( scope, {
-            namePrefix: props.namePrefix,
-            instanceType: props.instanceType,
-            machineImage: props.machineImage,
-            keyPair: props.keyPair,
-            securityGroup: props.securityGroup
-        }),
+        launchTemplate: props.launchTemplate,
         
         init: CloudFormationInit.fromElements( ...initWebServer( {} ).concat( props.initElements ) ),
         
