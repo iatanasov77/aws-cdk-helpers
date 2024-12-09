@@ -36,7 +36,7 @@ export function createAutoScalingGroup( scope: Construct, props: AutoScalingGrou
 export function createApplicationLoadBalancer( scope: Construct, props: ApplicationLoadBalancerProps ): IApplicationLoadBalancer
 {
     // Create a LoadBalancer
-    const lb = new ApplicationLoadBalancer( this, `${props.namePrefix}LoadBalancer`, {
+    const lb = new ApplicationLoadBalancer( scope, `${props.namePrefix}LoadBalancer`, {
         vpc: props.vpc,
         internetFacing: true
     });
