@@ -28,13 +28,13 @@ export interface StandaloneMachineProps
 {
     namePrefix: string;
     
-    instanceType: InstanceType,
+    instanceType: InstanceType;
     machineImage: IMachineImage;
     
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
     
-    initElements: InitElement[],
+    initElements: InitElement[];
     uploadBucket?: string; // Bucket Name
 }
 
@@ -42,8 +42,8 @@ export interface VpcProps
 {
     namePrefix: string;
     
-    network: string,
-    mask: number
+    network: string;
+    mask: number;
 }
 
 export interface SgProps
@@ -56,10 +56,10 @@ export interface LaunchTemplateProps
 {
     namePrefix: string;
     
-    instanceType: InstanceType,
+    instanceType: InstanceType;
     machineImage: IMachineImage;
-    keyPair: IKeyPair,
-    securityGroup: SecurityGroup
+    keyPair: IKeyPair;
+    securityGroup: SecurityGroup;
 }
 
 export interface LoadbalancedMachineProps
@@ -69,13 +69,13 @@ export interface LoadbalancedMachineProps
      */ 
     namePrefix: string;
     
-    instanceType: InstanceType,
+    instanceType: InstanceType;
     machineImage: IMachineImage;
     
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
     
-    initElements: InitElement[],
+    initElements: InitElement[];
     uploadBucket?: string; // Bucket Name
     
     /**
