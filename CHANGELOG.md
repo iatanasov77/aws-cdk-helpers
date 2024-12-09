@@ -1,3 +1,9 @@
+0.4.1	|	Release date: **09.12.2024**
+============================================
+* New Features:
+  - Create a lamp module for initialization a lamp stack on a WebServer EC2 Instance.
+
+
 0.4.0	|	Release date: **09.12.2024**
 ============================================
 * New Features:
