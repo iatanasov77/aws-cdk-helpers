@@ -1,5 +1,6 @@
 import {
     InitElement,
+    InitFile,
     InitCommand,
     InitService,
     InitPackage,
