@@ -3,6 +3,8 @@ export interface WebServerProps
     webServerPackage?: string;
     phpVersion?: string;
     databasePackage?: string; // mariadb105-server
+    databasePassword?: string;
+    phpMyAdmin?: string; // PhpMyAdmin Version
 }
 
 export interface ApplicationProps
