@@ -8,13 +8,13 @@ import {
 
 import { WebServerProps } from './types/application';
 
+let elements = [];
+
 /*
  * https://docs.aws.amazon.com/linux/al2023/ug/ec2-lamp-amazon-linux-2023.html
  */
 export function initWebServer( props: WebServerProps ): Array<InitElement>
 {
-    let elements = [];
-    
     // Install Web Server
     if ( props.webServerPackage ) {
         elements.push( InitPackage.yum( props.webServerPackage ) );
@@ -24,11 +24,11 @@ export function initWebServer( props: WebServerProps ): Array<InitElement>
     
     // Install Database Server
     if ( props.databasePackage ) {
-        elements.concat( installDatabaseServer( props.databasePackage ) );
+        installDatabaseServer( props.databasePackage );
     }
     
     // Install PHP
-    elements.concat( installPhp( props.phpVersion ) );
+    installPhp( props.phpVersion );
     
     // Restart Web Server
     elements.push(
@@ -40,10 +40,8 @@ export function initWebServer( props: WebServerProps ): Array<InitElement>
     return elements;
 }
 
-function installDatabaseServer( databasePackage: string ): Array<InitElement>
+function installDatabaseServer( databasePackage: string ): void
 {
-    let elements = [];
-    
     elements.push(
         InitCommand.shellCommand(
             `sudo dnf install ${databasePackage} -y`,
@@ -55,14 +53,11 @@ function installDatabaseServer( databasePackage: string ): Array<InitElement>
             serviceRestartHandle: new InitServiceRestartHandle(),
         })
     );
-    
-    return elements;
 }
 
-function installPhp( phpVersion?: string ): Array<InitElement>
+function installPhp( phpVersion?: string ): void
 {
     let command;
-    let elements = [];
     
     if ( phpVersion ) {
         command = `sudo dnf install php${phpVersion} php${phpVersion}-cli php${phpVersion}-common php${phpVersion}-mbstring php${phpVersion}-xml -y`;
@@ -72,11 +67,7 @@ function installPhp( phpVersion?: string ): Array<InitElement>
     elements.push( InitCommand.shellCommand( command ) );
     
     // Install Composer
-    elements.push(
-        InitCommand.shellCommand(
-            "sudo dnf install composer -y",
-        )
-    );
-    
-    return elements;
+    elements.push( InitCommand.shellCommand(
+        "sudo dnf install composer -y",
+    ));
 }

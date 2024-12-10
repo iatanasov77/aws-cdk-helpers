@@ -1,3 +1,9 @@
+0.4.2	|	Release date: **10.12.2024**
+============================================
+* Bug-Fixes:
+  - Fix LAMP Initialization of WebServer EC2 Instance.
+
+
 0.4.1	|	Release date: **09.12.2024**
 ============================================
 * New Features:
