@@ -1,3 +1,9 @@
+0.4.3	|	Release date: **10.12.2024**
+============================================
+* New Features:
+  - Add Installation of PhpMyAdmin on WebServer Ec2 Instances
+
+
 0.4.2	|	Release date: **10.12.2024**
 ============================================
 * Bug-Fixes:

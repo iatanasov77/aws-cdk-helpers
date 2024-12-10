@@ -1,5 +1,6 @@
 import {
     InitElement,
+    InitFile,
     InitCommand,
     InitService,
     InitPackage,
@@ -24,11 +25,15 @@ export function initWebServer( props: WebServerProps ): Array<InitElement>
     
     // Install Database Server
     if ( props.databasePackage ) {
-        installDatabaseServer( props.databasePackage );
+        installDatabaseServer( props.databasePackage, props.databasePassword );
     }
     
     // Install PHP
     installPhp( props.phpVersion );
+    
+    if ( props.phpMyAdmin ) {
+        installPhpMyAdmin( props.phpMyAdmin );
+    }
     
     // Restart Web Server
     elements.push(
@@ -40,19 +45,19 @@ export function initWebServer( props: WebServerProps ): Array<InitElement>
     return elements;
 }
 
-function installDatabaseServer( databasePackage: string ): void
+function installDatabaseServer( databasePackage: string, databasePassword: string ): void
 {
-    elements.push(
-        InitCommand.shellCommand(
-            `sudo dnf install ${databasePackage} -y`,
-        )
-    );
+    elements.push( InitCommand.shellCommand(
+        `sudo dnf install ${databasePackage} -y`,
+    ));
     
-    elements.push(
-        InitService.enable( "mariadb", {
-            serviceRestartHandle: new InitServiceRestartHandle(),
-        })
-    );
+    elements.push( InitCommand.shellCommand(
+        `echo -e "\ny\ny\n${databasePassword}\n${databasePassword}\ny\ny\ny\ny\n" | sudo mysql_secure_installation`,
+    ));
+    
+    elements.push( InitService.enable( "mariadb", {
+        serviceRestartHandle: new InitServiceRestartHandle(),
+    }));
 }
 
 function installPhp( phpVersion?: string ): void
@@ -69,5 +74,16 @@ function installPhp( phpVersion?: string ): void
     // Install Composer
     elements.push( InitCommand.shellCommand(
         "sudo dnf install composer -y",
+    ));
+}
+
+function installPhpMyAdmin( phpMyAdminVersion: string ): void
+{
+    elements.push( InitFile.fromAsset(
+        '/usr/local/phpmyadmin.sh', './src/ec2Init/phpmyadmin.sh'
+    ));
+    
+    elements.push( InitCommand.shellCommand(
+        "sudo /usr/local/phpmyadmin.sh",
     ));
 }

@@ -22,39 +22,31 @@ export function initSamplePhpApplication( scope: Construct, props: ApplicationPr
     let elements = [];
     
     for( let i = 0; i < props.files.length; i++ ) {
-        elements.push(
-            InitFile.fromAsset(
-                `${props.applicationRoot}/${props.files[i]}`,
-                `${props.sourcePath}/${props.files[i]}`,
-            )
-        );
+        elements.push( InitFile.fromAsset(
+            `${props.applicationRoot}/${props.files[i]}`,
+            `${props.sourcePath}/${props.files[i]}`,
+        ));
     }
     
     if ( props.useComposer ) {
-        elements.push(
-            InitFile.fromAsset(
-                `${props.applicationRoot}/composer.json`,
-                `${props.sourcePath}/composer.json`,
-            )
-        );
+        elements.push( InitFile.fromAsset(
+            `${props.applicationRoot}/composer.json`,
+            `${props.sourcePath}/composer.json`,
+        ));
         
-        elements.push(
-            InitCommand.shellCommand(
-                `cd ${props.applicationRoot} && sudo composer install  --no-interaction`,
-            )
-        );
+        elements.push( InitCommand.shellCommand(
+            `cd ${props.applicationRoot} && sudo composer install  --no-interaction`,
+        ));
     }
     
     if ( props.withEnv ) {
-        elements.push(
-            InitFile.fromString(
-                `${props.applicationRoot}/.env`,
-                createApplicationEnv( scope, {
-                    userName: props.userName,
-                    envVars: props.envVars,
-                }),
-            )
-        );
+        elements.push( InitFile.fromString(
+            `${props.applicationRoot}/.env`,
+            createApplicationEnv( scope, {
+                userName: props.userName,
+                envVars: props.envVars,
+            }),
+        ));
         
     }
     

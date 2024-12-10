@@ -81,7 +81,9 @@ export interface LoadbalancedMachineProps
     cidr: string; // Classless Inter-Domain Routing
     maxAzs?: number; // Maximum number of Availability Zones to use in this region
     
+    lamp?: WebServerProps;
     initElements: InitElement[];
+    
     uploadBucket?: string; // Bucket Name
     
     /**
