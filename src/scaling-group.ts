@@ -13,6 +13,13 @@ import { initWebServer } from './lamp';
 
 export function createAutoScalingGroup( scope: Construct, props: AutoScalingGroupProps ): AutoScalingGroup
 {
+    let instanceInit;
+    if ( props.withInstanceInit ) {
+        instanceInit = CloudFormationInit.fromElements( ...initWebServer(
+            props.lamp ? props.lamp : {}
+        ).concat( props.initElements ) );
+    }
+    
     const autoScalingGroup = new AutoScalingGroup( scope, `${props.namePrefix}AutoScalingGroup`, {
         autoScalingGroupName: `${props.namePrefix}AutoScalingGroup`,
         
@@ -21,10 +28,7 @@ export function createAutoScalingGroup( scope: Construct, props: AutoScalingGrou
         desiredCapacity: props.desiredCapacity,
         
         launchTemplate: props.launchTemplate,
-        
-        init: CloudFormationInit.fromElements( ...initWebServer({
-            
-        }).concat( props.initElements ) ),
+        init: instanceInit ? instanceInit : undefined,
         
         signals: Signals.waitForCount(1, {
             minSuccessPercentage: 80,

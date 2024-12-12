@@ -73,9 +73,22 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
     });
     
     // Create an EC2 instance
+    let instanceInit;
+    if ( props.withInstanceInit ) {
+        instanceInit = CloudFormationInit.fromElements( ...initWebServer(
+            props.lamp ? props.lamp : {}
+        ).concat( props.initElements ) );
+    }
+    
     let userDataText;
     if ( props.initScriptPath ) {
-        userDataText = readFileSync( props.initScriptPath, 'utf8' );
+        userDataText = readFileSync( props.initScriptPath, 'utf8' ).replaceAll(
+            '__PHP_VERSION__',
+            props.lamp.phpVersion
+        ).replaceAll(
+            '__DATABASE_ROOT_PASSWORD__',
+            props.lamp.databasePassword
+        );
     }
     
     const webServer = new Instance( scope, `${props.namePrefix}Instance`, {
@@ -91,9 +104,7 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
         keyPair: props.keyPair,
         securityGroup: secGroup,
         
-        init: CloudFormationInit.fromElements( ...initWebServer(
-            props.lamp ? props.lamp : {}
-        ).concat( props.initElements ) ),
+        init: instanceInit ? instanceInit : undefined,
         userData: userDataText ? UserData.custom( userDataText ) : undefined,
     });
     
@@ -156,8 +167,9 @@ export function createLaunchTemplate( scope: Construct, props: LaunchTemplatePro
         
         keyPair: props.keyPair,
         securityGroup: props.securityGroup,
-        
         role: createEc2ManagedInstanceCoreRole( scope, { namePrefix: props.namePrefix } ),
+        
+        userData: props.userDataText ? UserData.custom( props.userDataText ) : undefined,
     });
 }
 
@@ -178,22 +190,38 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         vpc: vpc
     });
     
-     const launchTemplate = createLaunchTemplate( scope, {
-            namePrefix: props.namePrefix,
-            keyPair: props.keyPair,
-            instanceType: props.instanceType,
-            machineImage: props.machineImage,
-            securityGroup: secGroup,
-        })
+    let userDataText;
+    if ( props.initScriptPath ) {
+        userDataText = readFileSync( props.initScriptPath, 'utf8' ).replaceAll(
+            '__PHP_VERSION__',
+            props.lamp.phpVersion
+        ).replaceAll(
+            '__DATABASE_ROOT_PASSWORD__',
+            props.lamp.databasePassword
+        );
+    }
+    
+    const launchTemplate = createLaunchTemplate( scope, {
+        namePrefix: props.namePrefix,
+        keyPair: props.keyPair,
+        instanceType: props.instanceType,
+        machineImage: props.machineImage,
+        securityGroup: secGroup,
+        userDataText: userDataText,
+    });
     
     // Create Auto-Scaling Group
     const autoScalingGroup = createAutoScalingGroup( scope, {
         namePrefix: props.namePrefix,
         
         vpc: vpc,
-        launchTemplate: launchTemplate,
-        desiredCapacity: props.desiredCapacity,
+        
+        withInstanceInit: props.withInstanceInit,
+        lamp: props.lamp,
         initElements: props.initElements,
+        launchTemplate: launchTemplate,
+        
+        desiredCapacity: props.desiredCapacity,
     });
     
     // Create a LoadBalancer
