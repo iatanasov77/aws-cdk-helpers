@@ -1,3 +1,9 @@
+0.5.0	|	Release date: **12.12.2024**
+============================================
+* New Features:
+  - Improve Initialization of Standalone WebServer and LoadBalanced WebServer.
+
+
 0.4.4	|	Release date: **12.12.2024**
 ============================================
 * New Features:
