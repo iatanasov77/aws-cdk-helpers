@@ -1,3 +1,11 @@
+0.4.4	|	Release date: **12.12.2024**
+============================================
+* New Features:
+  - Initialize WebServer EC2 Instances with bash script if passed.
+* Bug-Fixes:
+  - Fix PhpMyAdmin Installation.
+
+
 0.4.3	|	Release date: **10.12.2024**
 ============================================
 * New Features:
