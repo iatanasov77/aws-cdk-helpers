@@ -9,11 +9,16 @@ import {
 } from 'aws-cdk-lib/aws-ec2';
 import { AutoScalingGroup } from 'aws-cdk-lib/aws-autoscaling';
 
+import { WebServerProps } from './application';
+
 export interface AutoScalingGroupProps
 {
     namePrefix: string;
     
     vpc: IVpc;
+    
+    withInstanceInit?: boolean;
+    lamp?: WebServerProps;
     initElements: InitElement[];
     launchTemplate: ILaunchTemplate;
     
