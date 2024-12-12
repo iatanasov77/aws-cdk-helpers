@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import { Construct } from 'constructs';
 
 import {
@@ -19,7 +20,8 @@ import {
     SecurityGroup,
     CloudFormationInit,
     LaunchTemplate,
-    ILaunchTemplate
+    ILaunchTemplate,
+    UserData
 } from 'aws-cdk-lib/aws-ec2';
 
 import {
@@ -71,6 +73,11 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
     });
     
     // Create an EC2 instance
+    let userDataText;
+    if ( props.initScriptPath ) {
+        userDataText = readFileSync( props.initScriptPath, 'utf8' );
+    }
+    
     const webServer = new Instance( scope, `${props.namePrefix}Instance`, {
         instanceName: `${props.namePrefix}Instance`,
         
@@ -87,6 +94,7 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
         init: CloudFormationInit.fromElements( ...initWebServer(
             props.lamp ? props.lamp : {}
         ).concat( props.initElements ) ),
+        userData: userDataText ? UserData.custom( userDataText ) : undefined,
     });
     
     // Allow inbound HTTP traffic

@@ -35,6 +35,7 @@ export interface StandaloneMachineProps
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
     
+    initScriptPath?: string;
     lamp?: WebServerProps;
     initElements?: InitElement[];
     
@@ -81,6 +82,7 @@ export interface LoadbalancedMachineProps
     cidr: string; // Classless Inter-Domain Routing
     maxAzs?: number; // Maximum number of Availability Zones to use in this region
     
+    initScriptPath?: string;
     lamp?: WebServerProps;
     initElements: InitElement[];
     

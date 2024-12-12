@@ -25,7 +25,7 @@ export function initWebServer( props: WebServerProps ): Array<InitElement>
     
     // Install Database Server
     if ( 'databasePackage' in props && props.databasePackage ) {
-        installDatabaseServer( props.databasePackage, props.databasePassword );
+        installDatabaseServer( props.databasePackage );
     }
     
     // Install PHP
@@ -45,14 +45,10 @@ export function initWebServer( props: WebServerProps ): Array<InitElement>
     return elements;
 }
 
-function installDatabaseServer( databasePackage: string, databasePassword: string ): void
+function installDatabaseServer( databasePackage: string ): void
 {
     elements.push( InitCommand.shellCommand(
         `sudo dnf install ${databasePackage} -y`,
-    ));
-    
-    elements.push( InitCommand.shellCommand(
-        `echo -e "\\ny\\ny\\n${databasePassword}\\n${databasePassword}\\ny\\ny\\ny\\ny\\n" | sudo mysql_secure_installation`,
     ));
     
     elements.push( InitService.enable( "mariadb", {
