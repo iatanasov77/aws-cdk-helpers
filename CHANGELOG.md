@@ -1,3 +1,10 @@
+0.5.5	|	Release date: **13.12.2024**
+============================================
+* New Features and Improvements:
+  - Set passed 'autoScalingParams' into LoadbalancedMachineProps
+  - Pass LaunchTemplateRole to LoadbalancedMachine .
+
+
 0.5.4	|	Release date: **13.12.2024**
 ============================================
 * Bug-Fixes:
