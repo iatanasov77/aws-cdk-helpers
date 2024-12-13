@@ -227,6 +227,8 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         vpc: vpc,
         
         withInstanceInit: props.withInstanceInit,
+        initWebServer: props.initWebServer,
+        
         lamp: props.lamp,
         initElements: props.initElements,
         launchTemplate: launchTemplate,

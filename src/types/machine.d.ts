@@ -89,6 +89,8 @@ export interface LoadbalancedMachineProps
     
     initScriptPath?: string;
     withInstanceInit?: boolean;
+    initWebServer?: boolean;
+    
     lamp?: WebServerProps;
     initElements: InitElement[];
     
