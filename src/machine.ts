@@ -1,5 +1,4 @@
 import { readFileSync } from 'fs';
-import slug from 'slug';
 import { Construct } from 'constructs';
 
 import {
@@ -41,10 +40,17 @@ import { createEc2ManagedInstanceCoreRole } from './iam';
 
 import { createAutoScalingGroup, createApplicationLoadBalancer } from './scaling-group';
 
+import slugify from "slugify";
+
 export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): MachineKeyPair
 {
+    const KeyPairName = slugify( props.namePrefix + ' Key Pair', {
+        lower: true,
+        locale: 'en',
+    });
+    
     const cfnKeyPair = new CfnKeyPair( scope, `${props.namePrefix}CfnKeyPair`, {
-        keyName: `${slug( props.namePrefix + ' Key Pair' )}`,
+        keyName: KeyPairName,
         //keyType: KeyPairType.ED25519,
         keyType: KeyPairType.RSA,
         keyFormat: KeyPairFormat.PEM,
