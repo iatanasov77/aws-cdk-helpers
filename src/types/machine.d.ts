@@ -37,6 +37,8 @@ export interface StandaloneMachineProps
     
     initScriptPath?: string;
     withInstanceInit?: boolean;
+    initWebServer?: boolean;
+    
     lamp?: WebServerProps;
     initElements?: InitElement[];
     
