@@ -1,3 +1,9 @@
+0.5.4	|	Release date: **13.12.2024**
+============================================
+* Bug-Fixes:
+  - Fix LoadbalancedMachineProps.
+
+
 0.5.3	|	Release date: **13.12.2024**
 ============================================
 * Bug-Fixes and Improvements:
