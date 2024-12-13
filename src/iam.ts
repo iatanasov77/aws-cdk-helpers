@@ -33,6 +33,12 @@ export function createEc2ManagedInstanceCoreRole( scope: Construct, props: RoleP
     });
 }
 
+/**
+ * The AdministratorAccess policy in Amazon Web Services (AWS) provides complete,
+ * unrestricted access to all resources in an AWS account
+ *
+ * https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AdministratorAccess.html
+ */
 export function createAdministratorAccessRole( scope: Construct, props: RoleProps ): IRole
 {
     return new Role( scope, `${props.namePrefix}AdministratorAccessRole`, {
