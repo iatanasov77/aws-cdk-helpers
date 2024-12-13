@@ -25,12 +25,20 @@ export function getUserProfile( scope: Construct, userName: string ): UserProfil
 
 export function createEc2ManagedInstanceCoreRole( scope: Construct, props: RoleProps ): IRole
 {
-    return new Role( scope, `${props.namePrefix}Role`, {
+    return new Role( scope, `${props.namePrefix}Ec2ManagedInstanceCoreRole`, {
         assumedBy: new ServicePrincipal( "ec2.amazonaws.com" ),
         managedPolicies: [
-            ManagedPolicy.fromAwsManagedPolicyName(
-                "AmazonSSMManagedInstanceCore",
-            ),
+            ManagedPolicy.fromAwsManagedPolicyName( "AmazonSSMManagedInstanceCore" ),
+        ],
+    });
+}
+
+export function createAdministratorAccessRole( scope: Construct, props: RoleProps ): IRole
+{
+    return new Role( scope, `${props.namePrefix}AdministratorAccessRole`, {
+        assumedBy: new ServicePrincipal( "ec2.amazonaws.com" ),
+        managedPolicies: [
+            ManagedPolicy.fromAwsManagedPolicyName( "AdministratorAccess" ),
         ],
     });
 }

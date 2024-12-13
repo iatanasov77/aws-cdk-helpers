@@ -39,7 +39,11 @@ import {
 } from './types/machine';
 
 import { initWebServer } from './lamp';
-import { createEc2ManagedInstanceCoreRole } from './iam';
+
+import {
+    createEc2ManagedInstanceCoreRole,
+    createAdministratorAccessRole
+} from './iam';
 
 import { createAutoScalingGroup, createApplicationLoadBalancer } from './scaling-group';
 
@@ -177,6 +181,9 @@ export function createLaunchTemplate( scope: Construct, props: LaunchTemplatePro
     switch ( props.role ) {
         case LaunchTemplateRole.Ec2ManagedInstanceCoreRole:
             role = createEc2ManagedInstanceCoreRole( scope, { namePrefix: props.namePrefix } );
+            break;
+        case LaunchTemplateRole.AdministratorAccessRole:
+            role = createAdministratorAccessRole( scope, { namePrefix: props.namePrefix } );
             break;
     }
     

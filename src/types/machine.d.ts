@@ -113,5 +113,6 @@ export interface ILoadbalancedWebServer
 
 export const enum LaunchTemplateRole
 {
-    Ec2ManagedInstanceCoreRole
+    Ec2ManagedInstanceCoreRole,
+    AdministratorAccessRole,
 }
