@@ -1,3 +1,9 @@
+0.5.2	|	Release date: **13.12.2024**
+============================================
+* Bug-Fixes and Improvements:
+  - Change 'slug' with 'slugify', because 'slug' not support CommonJs.
+
+
 0.5.1	|	Release date: **13.12.2024**
 ============================================
 * Bug-Fixes and Improvements:
