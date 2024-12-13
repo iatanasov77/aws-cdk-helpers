@@ -20,7 +20,8 @@ import {
     SgProps,
     LaunchTemplateProps,
     LoadbalancedMachineProps,
-    ILoadbalancedWebServer
+    ILoadbalancedWebServer,
+    LaunchTemplateRole
 } from './types/machine';
 
 import { TableProps } from './types/db';
@@ -54,6 +55,7 @@ export {
     LaunchTemplateProps,
     LoadbalancedMachineProps,
     ILoadbalancedWebServer,
+    LaunchTemplateRole,
     
     AutoScalingGroupProps,
     ApplicationLoadBalancerProps,
