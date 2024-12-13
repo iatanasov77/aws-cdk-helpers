@@ -1,3 +1,9 @@
+0.5.3	|	Release date: **13.12.2024**
+============================================
+* Bug-Fixes and Improvements:
+  - Improve Init of Standalone Instances and Scaling Group Instances.
+
+
 0.5.2	|	Release date: **13.12.2024**
 ============================================
 * Bug-Fixes and Improvements:
