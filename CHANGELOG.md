@@ -1,3 +1,9 @@
+0.5.1	|	Release date: **13.12.2024**
+============================================
+* Bug-Fixes and Improvements:
+  - Generate a Key Pair Name insteed of using of hardcoded string.
+
+
 0.5.0	|	Release date: **12.12.2024**
 ============================================
 * New Features:
