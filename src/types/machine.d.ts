@@ -69,6 +69,7 @@ export interface LaunchTemplateProps
     machineImage: IMachineImage;
     keyPair: IKeyPair;
     securityGroup: SecurityGroup;
+    role?: LaunchTemplateRole;
     
     userDataText?: string;
 }
@@ -87,6 +88,7 @@ export interface LoadbalancedMachineProps
     cidr: string; // Classless Inter-Domain Routing
     maxAzs?: number; // Maximum number of Availability Zones to use in this region
     
+    launchTemplateRole?: LaunchTemplateRole;
     initScriptPath?: string;
     withInstanceInit?: boolean;
     initWebServer?: boolean;
@@ -107,4 +109,9 @@ export interface ILoadbalancedWebServer
 {
     autoScalingGroup: AutoScalingGroup;
     loadBalancer: IApplicationLoadBalancer;
+}
+
+export const enum LaunchTemplateRole
+{
+    Ec2ManagedInstanceCoreRole
 }

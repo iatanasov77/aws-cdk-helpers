@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { Construct } from 'constructs';
 
+import { IRole } from 'aws-cdk-lib/aws-iam';
 import {
     CfnKeyPair,
     KeyPairType,
@@ -33,7 +34,8 @@ import {
     SgProps,
     LaunchTemplateProps,
     LoadbalancedMachineProps,
-    ILoadbalancedWebServer
+    ILoadbalancedWebServer,
+    LaunchTemplateRole
 } from './types/machine';
 
 import { initWebServer } from './lamp';
@@ -171,14 +173,20 @@ export function createSecurityGroup( scope: Construct, props: SgProps ): Securit
 
 export function createLaunchTemplate( scope: Construct, props: LaunchTemplateProps ): ILaunchTemplate
 {
+    let role: IRole;
+    switch ( props.role ) {
+        case LaunchTemplateRole.Ec2ManagedInstanceCoreRole:
+            role = createEc2ManagedInstanceCoreRole( scope, { namePrefix: props.namePrefix } );
+            break;
+    }
+    
     return new LaunchTemplate( scope, `${props.namePrefix}LaunchTemplate`, {
         instanceType: props.instanceType,
         machineImage: props.machineImage,
         
         keyPair: props.keyPair,
         securityGroup: props.securityGroup,
-        
-        role: createEc2ManagedInstanceCoreRole( scope, { namePrefix: props.namePrefix } ),
+        role: role,
         
         userData: props.userDataText ? UserData.custom( props.userDataText ) : undefined,
     });
@@ -218,6 +226,8 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         instanceType: props.instanceType,
         machineImage: props.machineImage,
         securityGroup: secGroup,
+        
+        role: props.launchTemplateRole,
         userDataText: userDataText,
     });
     
