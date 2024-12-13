@@ -21,7 +21,8 @@ import {
     CloudFormationInit,
     LaunchTemplate,
     ILaunchTemplate,
-    UserData
+    UserData,
+    InitElement
 } from 'aws-cdk-lib/aws-ec2';
 
 import {
@@ -82,9 +83,11 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
     // Create an EC2 instance
     let instanceInit;
     if ( props.withInstanceInit ) {
-        instanceInit = CloudFormationInit.fromElements( ...initWebServer(
-            props.lamp ? props.lamp : {}
-        ).concat( props.initElements ) );
+        let initElements: InitElement[] = props.initWebServer ?
+                                        initWebServer( props.lamp ? props.lamp : {} ).concat( props.initElements ) :
+                                        props.initElements;
+        
+        instanceInit = CloudFormationInit.fromElements( ...initElements );
     }
     
     let userDataText;

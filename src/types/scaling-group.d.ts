@@ -18,6 +18,8 @@ export interface AutoScalingGroupProps
     vpc: IVpc;
     
     withInstanceInit?: boolean;
+    initWebServer?: boolean;
+    
     lamp?: WebServerProps;
     initElements: InitElement[];
     launchTemplate: ILaunchTemplate;
