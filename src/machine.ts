@@ -177,6 +177,7 @@ export function createLaunchTemplate( scope: Construct, props: LaunchTemplatePro
         
         keyPair: props.keyPair,
         securityGroup: props.securityGroup,
+        
         role: createEc2ManagedInstanceCoreRole( scope, { namePrefix: props.namePrefix } ),
         
         userData: props.userDataText ? UserData.custom( props.userDataText ) : undefined,
@@ -244,13 +245,17 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
     });
     
     // Auto Scalling Rules
-    autoScalingGroup.scaleOnCpuUtilization( "OnCpuUtilizationScaling", {
-        targetUtilizationPercent: 60,
-    });
+    if ( props.autoScalingParams.cpuUtilizationPercent ) {
+        autoScalingGroup.scaleOnCpuUtilization( "OnCpuUtilizationScaling", {
+            targetUtilizationPercent: props.autoScalingParams.cpuUtilizationPercent,
+        });
+    }
     
-    autoScalingGroup.scaleOnRequestCount( 'OnRequestCountScaling', {
-        targetRequestsPerMinute: 60,
-    });
+    if ( props.autoScalingParams.рequestsCountPerMinute ) {
+        autoScalingGroup.scaleOnRequestCount( 'OnRequestCountScaling', {
+            targetRequestsPerMinute: props.autoScalingParams.рequestsCountPerMinute,
+        });
+    }
     
     return {
         autoScalingGroup: autoScalingGroup,
