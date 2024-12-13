@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import slug from 'slug';
 import { Construct } from 'constructs';
 
 import {
@@ -43,7 +44,7 @@ import { createAutoScalingGroup, createApplicationLoadBalancer } from './scaling
 export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): MachineKeyPair
 {
     const cfnKeyPair = new CfnKeyPair( scope, `${props.namePrefix}CfnKeyPair`, {
-        keyName: 'my-key-pair',
+        keyName: `${slug( props.namePrefix + ' Key Pair' )}`,
         //keyType: KeyPairType.ED25519,
         keyType: KeyPairType.RSA,
         keyFormat: KeyPairFormat.PEM,
