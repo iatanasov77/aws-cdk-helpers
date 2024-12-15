@@ -1,3 +1,10 @@
+0.5.8	|	Release date: **15.12.2024**
+============================================
+* Bug-Fixes:
+  - Fix undefined Variable.
+  - Update Package Version.
+
+
 0.5.7	|	Release date: **15.12.2024**
 ============================================
 * New Features and Improvements:
