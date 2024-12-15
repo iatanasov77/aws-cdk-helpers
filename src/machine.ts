@@ -296,10 +296,10 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
 
 export function createMachineInitElements( initScripts: InitScript[] ): InitElement[]
 {
-    let elements: InitElement[];
     let scriptPath: string;
     let scriptContent: string;
     
+    let elements: InitElement[] = [];
     for ( let script of initScripts ) {
         scriptContent = readFileSync( script.path, 'utf8' );
         for ( let key in script.params ) {
