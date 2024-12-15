@@ -83,3 +83,24 @@ function installPhpMyAdmin( phpMyAdminVersion: string ): void
         "sudo chmod 0777 /usr/local/bin/phpmyadmin.sh && sudo /usr/local/bin/phpmyadmin.sh",
     ));
 }
+
+/*
+function installMySqlServer( databasePackage: string ): void
+{
+    let userDataText = readFileSync( './src/ec2Init/mysql.sh', 'utf8' ).replaceAll(
+        '__PHP_VERSION__',
+        props.lamp.phpVersion
+    ).replaceAll(
+        '__DATABASE_ROOT_PASSWORD__',
+        props.lamp.databasePassword
+    );
+    
+    elements.push( InitFile.fromString(
+        '/usr/local/bin/mysql.sh', userDataText
+    ));
+    
+    elements.push( InitCommand.shellCommand(
+        "sudo chmod 0777 /usr/local/bin/mysql.sh && sudo /usr/local/bin/mysql.sh",
+    ));
+}
+*/

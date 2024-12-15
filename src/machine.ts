@@ -23,7 +23,10 @@ import {
     LaunchTemplate,
     ILaunchTemplate,
     UserData,
-    InitElement
+    
+    InitElement,
+    InitFile,
+    InitCommand
 } from 'aws-cdk-lib/aws-ec2';
 
 import {
@@ -35,7 +38,8 @@ import {
     LaunchTemplateProps,
     LoadbalancedMachineProps,
     ILoadbalancedWebServer,
-    LaunchTemplateRole
+    LaunchTemplateRole,
+    InitScript
 } from './types/machine';
 
 import { initWebServer } from './lamp';
@@ -216,6 +220,7 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         vpc: vpc
     });
     
+    /*
     let userDataText;
     if ( props.initScriptPath ) {
         userDataText = readFileSync( props.initScriptPath, 'utf8' ).replaceAll(
@@ -226,6 +231,12 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
             props.lamp.databasePassword
         );
     }
+    */
+    
+    let initElements: InitElement[] = [];
+    if ( props.initScripts ) {
+        initElements = createMachineInitElements( props.initScripts );
+    }
     
     const launchTemplate = createLaunchTemplate( scope, {
         namePrefix: props.namePrefix,
@@ -235,7 +246,7 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         securityGroup: secGroup,
         
         role: props.launchTemplateRole,
-        userDataText: userDataText,
+        //userDataText: userDataText,
     });
     
     // Create Auto-Scaling Group
@@ -244,12 +255,15 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         
         vpc: vpc,
         
+        /*
         withInstanceInit: props.withInstanceInit,
         initWebServer: props.initWebServer,
-        
         lamp: props.lamp,
         initElements: props.initElements,
+        */
+        
         launchTemplate: launchTemplate,
+        initElements: initElements.concat( props.initElements ),
         
         desiredCapacity: props.desiredCapacity,
     });
@@ -278,4 +292,24 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         autoScalingGroup: autoScalingGroup,
         loadBalancer: lb,
     };
+}
+
+export function createMachineInitElements( initScripts: InitScript[] ): InitElement[]
+{
+    let elements: InitElement[];
+    let scriptPath: string;
+    let scriptContent: string;
+    
+    for ( let script of initScripts ) {
+        scriptContent = readFileSync( script.path, 'utf8' );
+        for ( let key in script.params ) {
+            scriptContent = scriptContent.replaceAll( key, script.params[key] );
+        }
+        
+        scriptPath = `/usr/local/bin/${script.path.split( '/' ).pop()}`;
+        elements.push( InitFile.fromString( scriptPath, scriptContent ) );
+        elements.push( InitCommand.shellCommand( `sudo chmod 0777 ${scriptPath} && sudo ${scriptPath}` ) );
+    }
+    
+    return elements;
 }
