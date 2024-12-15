@@ -1,3 +1,10 @@
+0.5.7	|	Release date: **15.12.2024**
+============================================
+* New Features and Improvements:
+  - Add Some Comments.
+  - Add InitScript Type and used in Creation of LoadBalanced Machine Props.
+
+
 0.5.6	|	Release date: **13.12.2024**
 ============================================
 * New Features:
