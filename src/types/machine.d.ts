@@ -89,9 +89,15 @@ export interface LoadbalancedMachineProps
     maxAzs?: number; // Maximum number of Availability Zones to use in this region
     
     launchTemplateRole?: LaunchTemplateRole;
+    
+    
+    
     initScriptPath?: string;
     withInstanceInit?: boolean;
     initWebServer?: boolean;
+    
+    initScripts?: InitScript[]
+    
     
     lamp?: WebServerProps;
     initElements: InitElement[];
@@ -103,6 +109,12 @@ export interface LoadbalancedMachineProps
      */
     desiredCapacity: number;
     autoScalingParams: AutoScalingParams;
+}
+
+export interface InitScript
+{
+    path: string;
+    params: { [key: string]: string };
 }
 
 export interface ILoadbalancedWebServer
