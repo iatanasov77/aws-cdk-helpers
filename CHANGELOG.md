@@ -1,3 +1,10 @@
+0.6.0	|	Release date: **16.12.2024**
+============================================
+* New Features and Improvements:
+  - Refatoring of EC2 Instance Initialization.
+  - Update Package Version.
+
+
 0.5.8	|	Release date: **15.12.2024**
 ============================================
 * Bug-Fixes:
