@@ -261,7 +261,7 @@ export function createMachineInitElements( initScripts: InitScript[] ): InitElem
     
     let elements: InitElement[] = [];
     elements.push( InitCommand.shellCommand(
-        'mkdir /usr/local/bin/Ec2Init && chmod -R 0777 /usr/local/bin/Ec2Init',
+        'mkdir -p /usr/local/bin/Ec2Init && chmod -R 0777 /usr/local/bin/Ec2Init',
     ));
     
     for ( let script of initScripts ) {
