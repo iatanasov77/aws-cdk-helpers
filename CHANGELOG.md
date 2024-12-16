@@ -1,3 +1,11 @@
+0.6.1	|	Release date: **16.12.2024**
+============================================
+* New Features and Improvements:
+  - Add Some Comments in PHP Application ENV File.
+  - Pass Inboud Ports of Security Group By Props.
+  - Update Package Version.
+
+
 0.6.0	|	Release date: **16.12.2024**
 ============================================
 * New Features and Improvements:
