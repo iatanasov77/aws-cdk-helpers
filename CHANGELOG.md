@@ -1,3 +1,9 @@
+0.6.2	|	Release date: **16.12.2024**
+============================================
+* Bug-Fixes:
+  - Fix Add CloudFormation Init for Standalone Web Server.
+
+
 0.6.1	|	Release date: **16.12.2024**
 ============================================
 * New Features and Improvements:
