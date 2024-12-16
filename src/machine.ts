@@ -93,6 +93,7 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
     if ( props.initScripts ) {
         initElements = createMachineInitElements( props.initScripts );
     }
+    initElements = initElements.concat( props.initElements );
     
     const webServer = new Instance( scope, `${props.namePrefix}Instance`, {
         instanceName: `${props.namePrefix}Instance`,
@@ -107,7 +108,7 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
         keyPair: props.keyPair,
         securityGroup: secGroup,
         
-        init: CloudFormationInit.fromElements( ...props.initElements ),
+        init: CloudFormationInit.fromElements( ...initElements ),
     });
     
     // Allow inbound HTTP traffic
@@ -259,13 +260,17 @@ export function createMachineInitElements( initScripts: InitScript[] ): InitElem
     let scriptContent: string;
     
     let elements: InitElement[] = [];
+    elements.push( InitCommand.shellCommand(
+        'mkdir /usr/local/bin/Ec2Init && chmod -R 0777 /usr/local/bin/Ec2Init',
+    ));
+    
     for ( let script of initScripts ) {
         scriptContent = readFileSync( script.path, 'utf8' );
         for ( let key in script.params ) {
             scriptContent = scriptContent.replaceAll( key, script.params[key] );
         }
         
-        scriptPath = `/usr/local/bin/${script.path.split( '/' ).pop()}`;
+        scriptPath = `/usr/local/bin/Ec2Init/${script.path.split( '/' ).pop()}`;
         elements.push( InitFile.fromString( scriptPath, scriptContent ) );
         elements.push( InitCommand.shellCommand( `sudo chmod 0777 ${scriptPath} && sudo ${scriptPath}` ) );
     }
