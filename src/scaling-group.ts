@@ -9,22 +9,8 @@ import {
     ApplicationLoadBalancerProps
 } from './types/scaling-group';
 
-import { initWebServer } from './lamp';
-
 export function createAutoScalingGroup( scope: Construct, props: AutoScalingGroupProps ): AutoScalingGroup
 {
-    /*
-    let instanceInit;
-    if ( props.withInstanceInit ) {
-    
-        let initElements: InitElement[] = props.initWebServer ?
-                                        initWebServer( props.lamp ? props.lamp : {} ).concat( props.initElements ) :
-                                        props.initElements;
-        
-        instanceInit = CloudFormationInit.fromElements( ...initElements );
-    }
-    */
-    
     let instanceInit = CloudFormationInit.fromElements( ...props.initElements );
     
     const autoScalingGroup = new AutoScalingGroup( scope, `${props.namePrefix}AutoScalingGroup`, {

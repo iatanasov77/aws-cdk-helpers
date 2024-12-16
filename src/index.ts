@@ -5,7 +5,6 @@ import * as iam from './iam';
 import * as db from './db';
 import * as storage from './storage';
 import * as machine from './machine';
-import * as lamp from './lamp';
 import * as application from './application';
 import * as scaling from './scaling-group';
 import { BaseFunction } from './lambda';
@@ -64,7 +63,6 @@ export {
     db,
     storage,
     machine,
-    lamp,
     application,
     scaling,
     

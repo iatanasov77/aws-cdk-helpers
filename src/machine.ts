@@ -42,8 +42,6 @@ import {
     InitScript
 } from './types/machine';
 
-import { initWebServer } from './lamp';
-
 import {
     createEc2ManagedInstanceCoreRole,
     createAdministratorAccessRole
@@ -90,25 +88,9 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
         vpc: vpc
     });
     
-    // Create an EC2 instance
-    let instanceInit;
-    if ( props.withInstanceInit ) {
-        let initElements: InitElement[] = props.initWebServer ?
-                                        initWebServer( props.lamp ? props.lamp : {} ).concat( props.initElements ) :
-                                        props.initElements;
-        
-        instanceInit = CloudFormationInit.fromElements( ...initElements );
-    }
-    
-    let userDataText;
-    if ( props.initScriptPath ) {
-        userDataText = readFileSync( props.initScriptPath, 'utf8' ).replaceAll(
-            '__PHP_VERSION__',
-            props.lamp.phpVersion
-        ).replaceAll(
-            '__DATABASE_ROOT_PASSWORD__',
-            props.lamp.databasePassword
-        );
+    let initElements: InitElement[] = [];
+    if ( props.initScripts ) {
+        initElements = createMachineInitElements( props.initScripts );
     }
     
     const webServer = new Instance( scope, `${props.namePrefix}Instance`, {
@@ -124,8 +106,7 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
         keyPair: props.keyPair,
         securityGroup: secGroup,
         
-        init: instanceInit ? instanceInit : undefined,
-        userData: userDataText ? UserData.custom( userDataText ) : undefined,
+        init: CloudFormationInit.fromElements( ...props.initElements ),
     });
     
     // Allow inbound HTTP traffic
@@ -220,19 +201,6 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         vpc: vpc
     });
     
-    /*
-    let userDataText;
-    if ( props.initScriptPath ) {
-        userDataText = readFileSync( props.initScriptPath, 'utf8' ).replaceAll(
-            '__PHP_VERSION__',
-            props.lamp.phpVersion
-        ).replaceAll(
-            '__DATABASE_ROOT_PASSWORD__',
-            props.lamp.databasePassword
-        );
-    }
-    */
-    
     let initElements: InitElement[] = [];
     if ( props.initScripts ) {
         initElements = createMachineInitElements( props.initScripts );
@@ -246,7 +214,6 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         securityGroup: secGroup,
         
         role: props.launchTemplateRole,
-        //userDataText: userDataText,
     });
     
     // Create Auto-Scaling Group
@@ -254,13 +221,6 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
         namePrefix: props.namePrefix,
         
         vpc: vpc,
-        
-        /*
-        withInstanceInit: props.withInstanceInit,
-        initWebServer: props.initWebServer,
-        lamp: props.lamp,
-        initElements: props.initElements,
-        */
         
         launchTemplate: launchTemplate,
         initElements: initElements.concat( props.initElements ),
