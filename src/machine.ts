@@ -64,7 +64,7 @@ export function createKeyPair( scope: Construct, props: MachineKeyPairProps ): M
         keyType: KeyPairType.RSA,
         keyFormat: KeyPairFormat.PEM,
     });
-    const keyPair = KeyPair.fromKeyPairName( scope, `${props.namePrefix}KeyPair`, 'my-key-pair' );
+    const keyPair = KeyPair.fromKeyPairName( scope, `${props.namePrefix}KeyPair`, KeyPairName );
     
     return {
         cfnKeyPair: cfnKeyPair,
@@ -85,7 +85,8 @@ export function createStandaloneWebServerInstance( scope: Construct, props: Stan
     // Create Security Group
     const secGroup = createSecurityGroup( scope, {
         namePrefix: props.namePrefix,
-        vpc: vpc
+        vpc: vpc,
+        inboundPorts: props.inboundPorts,
     });
     
     let initElements: InitElement[] = [];
@@ -147,15 +148,12 @@ export function createSecurityGroup( scope: Construct, props: SgProps ): Securit
         allowAllOutbound: true
     });
     
-    secGroup.addIngressRule(
-        Peer.anyIpv4(),
-        Port.tcp( 22 ), "allow SSH access"
-    );
-    
-    secGroup.addIngressRule(
-        Peer.anyIpv4(),
-        Port.tcp( 80 ), "allow HTTP access"
-    );
+    props.inboundPorts.forEach( ( inboundPort ) => {
+        secGroup.addIngressRule(
+            Peer.anyIpv4(),
+            Port.tcp( inboundPort ),
+        );
+    });
     
     return secGroup;
 }
@@ -198,7 +196,8 @@ export function createLoadbalancedWebServerInstance( scope: Construct, props: Lo
     // Create Security Group
     const secGroup = createSecurityGroup( scope, {
         namePrefix: props.namePrefix,
-        vpc: vpc
+        vpc: vpc,
+        inboundPorts: props.inboundPorts,
     });
     
     let initElements: InitElement[] = [];
