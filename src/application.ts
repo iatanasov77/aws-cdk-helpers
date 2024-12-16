@@ -55,7 +55,7 @@ export function initSamplePhpApplication( scope: Construct, props: ApplicationPr
 
 export function createApplicationEnv( scope: Construct, props: ApplicationEnvProps ): string
 {
-    let env: string = '';
+    let env: string = `# ENV File for VankoSoft AWS PHP Application\n\n`;
     
     if ( props.userName ) {
         const profile: UserProfile = iam.getUserProfile( scope, props.userName )
