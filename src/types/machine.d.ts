@@ -35,11 +35,7 @@ export interface StandaloneMachineProps
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
     
-    initScriptPath?: string;
-    withInstanceInit?: boolean;
-    initWebServer?: boolean;
-    
-    lamp?: WebServerProps;
+    initScripts?: InitScript[]
     initElements?: InitElement[];
     
     uploadBucket?: string; // Bucket Name
@@ -90,16 +86,7 @@ export interface LoadbalancedMachineProps
     
     launchTemplateRole?: LaunchTemplateRole;
     
-    
-    
-    initScriptPath?: string;
-    withInstanceInit?: boolean;
-    initWebServer?: boolean;
-    
     initScripts?: InitScript[]
-    
-    
-    lamp?: WebServerProps;
     initElements: InitElement[];
     
     uploadBucket?: string; // Bucket Name
