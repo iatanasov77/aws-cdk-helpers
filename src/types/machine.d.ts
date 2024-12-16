@@ -34,7 +34,7 @@ export interface StandaloneMachineProps
     
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
-    inboundPorts: Array // Inbound Ports for Security Group;
+    inboundPorts: Array<number> // Inbound Ports for Security Group;
     
     initScripts?: InitScript[]
     initElements?: InitElement[];
@@ -56,7 +56,7 @@ export interface SgProps
 {
     namePrefix: string;
     vpc: IVpc;
-    inboundPorts: Array;
+    inboundPorts: Array<number>;
 }
 
 export interface LaunchTemplateProps
@@ -84,7 +84,7 @@ export interface LoadbalancedMachineProps
     
     keyPair: IKeyPair;
     cidr: string; // Classless Inter-Domain Routing
-    inboundPorts: Array // Inbound Ports for Security Group;
+    inboundPorts: Array<number> // Inbound Ports for Security Group;
     
     maxAzs?: number; // Maximum number of Availability Zones to use in this region
     launchTemplateRole?: LaunchTemplateRole;
