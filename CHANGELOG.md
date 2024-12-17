@@ -1,3 +1,12 @@
+0.6.3	|	Release date: **17.12.2024**
+============================================
+* New Features:
+  - Create a Type for inboundPorts and Use It.
+  - Update Package Json Version.
+* Bug-Fixes:
+  - Force Creation of Ec2Init Dir on Server Instances.
+
+
 0.6.2	|	Release date: **16.12.2024**
 ============================================
 * Bug-Fixes:
