@@ -39,7 +39,8 @@ import {
     LoadbalancedMachineProps,
     ILoadbalancedWebServer,
     LaunchTemplateRole,
-    InitScript
+    InitScript,
+    Ec2Port
 } from './types/machine';
 
 import {
@@ -149,10 +150,19 @@ export function createSecurityGroup( scope: Construct, props: SgProps ): Securit
         allowAllOutbound: true
     });
     
-    props.inboundPorts.forEach( ( inboundPort ) => {
+    props.inboundPorts.forEach( ( ec2Port ) => {
+        let port: Port;
+        if ( typeof ec2Port.port === 'number' ) {
+            port = Port.tcp( ec2Port.port );
+        } else {
+            let portRange = ec2Port.port.split( '-' );
+            port = Port.tcpRange( Number( portRange[0] ), Number( portRange[1] ) );
+        }
+        
         secGroup.addIngressRule(
             Peer.anyIpv4(),
-            Port.tcp( inboundPort ),
+            port,
+            ec2Port.description
         );
     });
     
@@ -261,7 +271,7 @@ export function createMachineInitElements( initScripts: InitScript[] ): InitElem
     
     let elements: InitElement[] = [];
     elements.push( InitCommand.shellCommand(
-        'mkdir -p /usr/local/bin/Ec2Init && chmod -R 0777 /usr/local/bin/Ec2Init',
+        'mkdir -p /usr/local/bin/LampServerInit && chmod -R 0777 /usr/local/bin/LampServerInit',
     ));
     
     for ( let script of initScripts ) {
@@ -270,7 +280,7 @@ export function createMachineInitElements( initScripts: InitScript[] ): InitElem
             scriptContent = scriptContent.replaceAll( key, script.params[key] );
         }
         
-        scriptPath = `/usr/local/bin/Ec2Init/${script.path.split( '/' ).pop()}`;
+        scriptPath = `/usr/local/bin/LampServerInit/${script.path.split( '/' ).pop()}`;
         elements.push( InitFile.fromString( scriptPath, scriptContent ) );
         elements.push( InitCommand.shellCommand( `sudo chmod 0777 ${scriptPath} && sudo ${scriptPath}` ) );
     }

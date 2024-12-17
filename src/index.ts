@@ -20,7 +20,9 @@ import {
     LaunchTemplateProps,
     LoadbalancedMachineProps,
     ILoadbalancedWebServer,
-    LaunchTemplateRole
+    LaunchTemplateRole,
+    InitScript,
+    Ec2Port
 } from './types/machine';
 
 import { TableProps } from './types/db';
